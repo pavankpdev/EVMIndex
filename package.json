@@ -1,0 +1,21 @@
+{
+  "name": "EVMIndex",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc & babel src --out-dir dist --copy-files",
+    "dev": "npx ts-node src/index"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.21.0",
+    "@babel/core": "^7.21.4",
+    "@babel/preset-env": "^7.21.4",
+    "@babel/preset-typescript": "^7.21.4",
+    "@types/node": "^18.15.11",
+    "typescript": "^5.0.4"
+  }
+}
