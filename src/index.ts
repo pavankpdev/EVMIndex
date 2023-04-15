@@ -6,6 +6,9 @@ import { Provider } from '@/config/provider'
 import { setup } from '@/setup'
 import { connectToDB } from '@/db/connect'
 
+// MODELS
+import Transfers from '@/db/models/Transfers'
+
 dotenv.config()
 
 connectToDB().then(() => {
@@ -46,14 +49,18 @@ async function getNftTransferLogs(fromBlock = 26474083, toBlock = 'latest') {
     topics: [ethers.utils.id('Transfer(address,address,uint256)'), null, null],
   }
   const logs = await Provider.getLogs(filter)
-  return logs.slice(0, 1).map((log) => {
+  const transfers = logs.map((log) => {
     const event = contract.interface.parseLog(log)
     return {
       from: event.args[0],
       to: event.args[1],
       tokenId: event.args[2].toString(),
+      blockNumber: log.blockNumber,
+      txHash: log.transactionHash,
     }
   })
+
+  await Transfers.insertMany(transfers)
 }
 
 // Example usage
