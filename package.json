@@ -5,7 +5,13 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc & babel src --out-dir dist --copy-files",
-    "dev": "npx ts-node src/index"
+    "dev": "npx ts-node src/index",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "prettier": "prettier --write \"**/*.ts\"",
+    "prettier:check": "prettier --check \"**/*.ts\"",
+    "prepare": "husky install",
+    "pre-commit": "lint-staged"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +22,36 @@
     "@babel/preset-env": "^7.21.4",
     "@babel/preset-typescript": "^7.21.4",
     "@types/node": "^18.15.11",
+    "eslint": "^8.38.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.1",
+    "prettier": "^2.8.7",
     "typescript": "^5.0.4"
+  },
+  "eslintConfig": {
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
+      "prettier"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "plugins": ["@typescript-eslint"],
+    "rules": {
+      "prettier/prettier": "error"
+    }
+  },
+  "prettier": {
+    "singleQuote": true,
+    "semi": false,
+    "trailingComma": "es5"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "npm run lint:fix",
+      "npm run prettier:check",
+      "git add"
+    ]
   }
 }
