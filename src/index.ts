@@ -4,8 +4,13 @@ import { ethers } from 'ethers'
 // CONFIGS
 import { Provider } from '@/config/provider'
 import { setup } from '@/setup'
+import { connectToDB } from '@/db/connect'
 
 dotenv.config()
+
+connectToDB().then(() => {
+  console.log('Connected to DB')
+})
 
 const abi = [
   {
