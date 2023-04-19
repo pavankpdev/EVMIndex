@@ -17,11 +17,11 @@
 
 Install dependencies
 ```bash
-  npm install 
-  # or
-  yarn
-  # or
-  pnpm install
+npm install 
+# or
+yarn
+# or
+pnpm install
 ```
 
 Setup ENVs, you might to update the values inside the `.env` file
