@@ -21,6 +21,10 @@ const Schema = {
     type: String,
     required: true,
   },
+  contract: {
+    type: String,
+    required: true,
+  },
 }
 
 export default mongoose.model(
