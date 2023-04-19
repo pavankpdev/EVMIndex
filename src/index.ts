@@ -1,69 +1,44 @@
 import dotenv from 'dotenv'
-import { ethers } from 'ethers'
 
 // CONFIGS
-import { Provider } from '@/config/provider'
 import { setup } from '@/setup'
 import { connectToDB } from '@/db/connect'
 
 // MODELS
-import Transfers from '@/db/models/Transfers'
+import { setupListeners } from '@/utils/setupListeners'
+import { indexTypes } from '@/utils/indexTypes'
+import { getNftTransferLogs } from '@/utils/getPastLogs'
+import * as process from 'process'
+import { throwInvalidCmdErr } from '@/utils/throwInvalidCmdErr'
 
 dotenv.config()
 
-connectToDB().then(() => {
-  console.log('Connected to DB')
-})
+const args = process.argv.slice(2)
 
-const abi = [
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        name: 'from',
-        type: 'address',
-      },
-      {
-        indexed: true,
-        name: 'to',
-        type: 'address',
-      },
-      {
-        indexed: true,
-        name: 'tokenId',
-        type: 'uint256',
-      },
-    ],
-    name: 'Transfer',
-    type: 'event',
-  },
-]
-const contract = new ethers.Contract(setup?.contracts[0].address, abi, Provider)
-
-async function getNftTransferLogs(fromBlock = 26474083, toBlock = 'latest') {
-  const filter = {
-    address: setup?.contracts[0].address,
-    fromBlock,
-    toBlock,
-    topics: [ethers.utils.id('Transfer(address,address,uint256)'), null, null],
+const run = async () => {
+  if (!args.length || !args[0]) {
+    throwInvalidCmdErr()
   }
-  const logs = await Provider.getLogs(filter)
-  const transfers = logs.map((log) => {
-    const event = contract.interface.parseLog(log)
-    return {
-      from: event.args[0],
-      to: event.args[1],
-      tokenId: event.args[2].toString(),
-      blockNumber: log.blockNumber,
-      txHash: log.transactionHash,
-    }
-  })
+  if (!Object.values(indexTypes).some((key) => key === args[0])) {
+    throwInvalidCmdErr(args[0])
+  }
 
-  await Transfers.insertMany(transfers)
+  await connectToDB()
+  console.log('Connected to DB')
+
+  if (
+    args[0] === indexTypes['index-past-logs'] ||
+    args[0] === indexTypes['index-all']
+  ) {
+    await getNftTransferLogs(setup.contracts)
+  }
+
+  if (
+    args[0] === indexTypes['index-live'] ||
+    args[0] === indexTypes['index-all']
+  ) {
+    await setupListeners(setup.contracts)
+  }
 }
 
-// Example usage
-getNftTransferLogs(setup?.contracts[0].startBlock).then((logs) => {
-  console.log(logs)
-})
+run()
