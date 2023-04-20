@@ -1,5 +1,14 @@
 import * as mongoose from 'mongoose'
 
+export interface Transfer {
+  from: string;
+  to: string;
+  tokenId: string;
+  txHash: string;
+  contract: string;
+  blockNumber: number;
+}
+
 const Schema = {
   from: {
     type: String,
@@ -29,7 +38,7 @@ const Schema = {
 
 export default mongoose.model(
   'Transfers',
-  new mongoose.Schema(Schema, {
+  new mongoose.Schema<Transfer>(Schema, {
     timestamps: true,
   })
 )

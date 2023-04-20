@@ -1,4 +1,10 @@
-export const setup = {
+import {Contract} from "@/types";
+import Transfers from "@/db/models/Transfers";
+
+type Setup = {
+    contracts: Contract[]
+}
+export const setup: Setup = {
   contracts: [
     {
       name: 'Chumbi',
@@ -29,6 +35,9 @@ export const setup = {
         },
       ],
       events: ['Transfer'],
+      model: Transfers,
+      primaryProperty: ["tokenId", "contract"],
+      topic: 'Transfer(address,address,uint256)',
     },
     {
       name: 'MEka Drivers',
@@ -59,6 +68,9 @@ export const setup = {
         },
       ],
       events: ['Transfer'],
+      model: Transfers,
+      primaryProperty: ["tokenId", "contract"],
+      topic: 'Transfer(address,address,uint256)',
     },
   ],
 }
