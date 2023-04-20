@@ -1,0 +1,72 @@
+{
+  "name": "EVMIndex",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc & babel src --out-dir dist --copy-files",
+    "dev": "npx ts-node -r tsconfig-paths/register src/index",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "prettier": "prettier --write \"**/*.ts\"",
+    "prettier:check": "prettier --check \"**/*.ts\"",
+    "prepare": "husky install",
+    "pre-commit": "lint-staged"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.21.0",
+    "@babel/core": "^7.21.4",
+    "@babel/preset-env": "^7.21.4",
+    "@babel/preset-typescript": "^7.21.4",
+    "@types/node": "^18.15.11",
+    "@typescript-eslint/eslint-plugin": "^5.58.0",
+    "@typescript-eslint/parser": "^5.58.0",
+    "eslint": "^8.38.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.1",
+    "prettier": "^2.8.7",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.0.4"
+  },
+  "eslintConfig": {
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
+      "prettier"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "rules": {
+      "@typescript-eslint/no-unused-vars": "error",
+      "@typescript-eslint/no-explicit-any": "error"
+    }
+  },
+  "prettier": {
+    "singleQuote": true,
+    "semi": false,
+    "trailingComma": "es5"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "pnpm run lint:fix",
+      "pnpm run prettier:check",
+      "pnpm run prettier",
+      "git add"
+    ]
+  },
+  "dependencies": {
+    "@typechain/ethers-v5": "^10.2.0",
+    "axios": "^1.3.6",
+    "dotenv": "^16.0.3",
+    "ethers": "5.6.1",
+    "mongoose": "^7.0.3",
+    "typechain": "^8.1.1"
+  }
+}
