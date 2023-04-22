@@ -8,39 +8,39 @@ export async function setupListeners(contracts: Contract[]) {
   const provider = Provider
 
   contracts.forEach((contract) => {
-    const { address, abi, events } = contract
+    const { address, abi, events, webhook, primaryProperty, model } = contract
     const contractInstance = new ethers.Contract(address, abi, provider)
+
+    if(!events) throw new Error('Events are required for live indexing');
+    if(!webhook) throw new Error('Webhook is required for live indexing');
+    if(!primaryProperty) throw new Error('Primary property is required for live indexing');
+    if(!model) throw new Error('Model is required for live indexing');
 
     events.forEach((eventName) => {
       const eventFilter = contractInstance.filters[eventName]()
-      contractInstance.on(eventFilter, async (from, to, tokenId) => {
+      contractInstance.on(eventFilter, async (eventParam) => {
+
+        const dbFilter: Record<string, string | number> = {}
+        for (let i = 0; i < primaryProperty.length; i++) {
+          const key: string = primaryProperty[i]
+          dbFilter[key] = eventParam[key]
+        }
         // Update the DB with latest transfer
         await Transfers.findOneAndUpdate(
+          dbFilter,
           {
-            from,
-            to,
-            tokenId: tokenId.toString(),
-            contract: address,
-          },
-          {
-            from,
-            to,
+            $set: eventParam,
           },
           {
             upsert: true,
           }
         )
 
-        console.log(
-          `Event ${eventName} for contract at ${address}: from ${from}, to ${to}, tokenId ${tokenId}`
-        )
         await axios({
           method: 'post',
-          url: 'https://webhook.site/c9e34d6f-ebdb-486b-81e1-8ddb93fad649', // test webhook
+          url: webhook,
           data: {
-            from,
-            to,
-            tokenId: tokenId.toString(),
+            ...eventParam,
             eventName,
             contract: address,
           },
