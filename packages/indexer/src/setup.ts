@@ -38,6 +38,7 @@ export const setup: Setup = {
       model: Transfers,
       primaryProperty: ["tokenId", "contract"],
       topic: 'Transfer(address,address,uint256)',
+      webhook: 'https://webhook.site/c9e34d6f-ebdb-486b-81e1-8ddb93fad649',
     },
     {
       name: 'MEka Drivers',
@@ -71,6 +72,7 @@ export const setup: Setup = {
       model: Transfers,
       primaryProperty: ["tokenId", "contract"],
       topic: 'Transfer(address,address,uint256)',
+      webhook: 'https://webhook.site/c9e34d6f-ebdb-486b-81e1-8ddb93fad649',
     },
   ],
 }
