@@ -9,5 +9,6 @@ export type Contract = {
   events: string[]
   topic?: string,
   model: Mongoose.Model<T, {}>,
-  primaryProperty: Array<keyof Transfer>
+  primaryProperty: Array<keyof Transfer>,
+  webhook?: string
 }
