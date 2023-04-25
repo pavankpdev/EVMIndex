@@ -18,9 +18,10 @@ export async function setupListeners(contracts: Contract[]) {
 
     events.forEach((eventName) => {
       const eventFilter = contractInstance.filters[eventName]()
-      contractInstance.on(eventFilter, async (eventParam) => {
+      contractInstance.on(eventFilter, async (from, to, tokenId) => {
 
         const dbFilter: Record<string, string | number> = {}
+        const eventParam: Record<string, string> = {from, to, tokenId};
         for (let i = 0; i < primaryProperty.length; i++) {
           const key: string = primaryProperty[i]
           dbFilter[key] = eventParam[key]

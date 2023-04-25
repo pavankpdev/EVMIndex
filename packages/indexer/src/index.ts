@@ -1,5 +1,6 @@
 import dotenv from 'dotenv'
-
+import * as process from 'node:process'
+import * as readline from "readline";
 // CONFIGS
 import { setup } from '@/setup'
 import { connectToDB } from '@/db/connect'
@@ -8,8 +9,8 @@ import { connectToDB } from '@/db/connect'
 import { setupListeners } from '@/utils/setupListeners'
 import { indexTypes } from '@/utils/indexTypes'
 import { getNftTransferLogs } from '@/utils/getPastLogs'
-import * as process from 'process'
 import { throwInvalidCmdErr } from '@/utils/throwInvalidCmdErr'
+import {removeAllListeners} from "@/utils/removeAllListeners";
 
 dotenv.config()
 
@@ -41,4 +42,18 @@ const run = async () => {
   }
 }
 
+
 run()
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+rl.on('SIGINT', () => {
+  console.log('SIGINT received');
+  removeAllListeners(setup.contracts)
+      .finally(() => {
+    process.exit();
+  })
+});
