@@ -7,12 +7,9 @@ import {join} from "path";
 import {importSchema} from "graphql-import"
 
 const schemaPath = join(__dirname, '../schema.graphql');
-console.log(schemaPath)
 
 const typeDefs = importSchema(schemaPath);
-console.log(typeDefs)
 
 const schema = loadSchemaSync(schemaPath, {
     loaders: [new GraphQLFileLoader()],
 });
-console.log(schema)
