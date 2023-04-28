@@ -8,8 +8,11 @@ import {importSchema} from "graphql-import"
 
 const schemaPath = join(__dirname, '../schema.graphql');
 
+// FIXME: unable to parse Bytes type
 const typeDefs = importSchema(schemaPath);
 
 const schema = loadSchemaSync(schemaPath, {
     loaders: [new GraphQLFileLoader()],
 });
+
+// TODO: gql to mongo modal
