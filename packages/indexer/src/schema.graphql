@@ -2,7 +2,7 @@ scalar Bytes
 scalar BigInt
 
 type Approval {
-  id: Bytes!
+  id: Bytes
   owner: Bytes! # address
   approved: Bytes! # address
   tokenId: BigInt! # uint256
