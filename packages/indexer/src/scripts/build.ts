@@ -5,11 +5,16 @@ import mongoose from "mongoose";
 import {schemaComposer} from "graphql-compose";
 const { composeMongoose } = require('graphql-compose-mongoose');
 const { makeExecutableSchema } = require('@graphql-tools/schema');
+import { compile as JsonToTS } from 'json-schema-to-typescript'
+import { Bytes32, Uint256, Uint32, Address } from 'soltypes'
+import {BigNumber, Bytes} from 'ethers'
+
 
 const schemaPath = join(__dirname, '../schema.graphql');
 const typeDefs = importSchema(schemaPath);
 const schema = makeExecutableSchema({ typeDefs });
 
+// TODO: Get that "Approval" name reference dynamically
 const typesArray = schema.getType('Approval')?.astNode?.fields.map((field: any) => {
     return {
         name: field?.name?.value,
@@ -19,6 +24,34 @@ const typesArray = schema.getType('Approval')?.astNode?.fields.map((field: any) 
 })
 
 console.log(typesArray)
+
+type customScalars = {
+    Bytes: Bytes,
+    BigInt: BigNumber,
+
+}
+
+// TODO: Types for these arrow functions
+const TSGeneratorSchema = ({
+    title: 'Approval',
+    type: 'object',
+    properties: typesArray.reduce((acc: any, curr: any) => {
+        acc[curr.name] = {
+            // TODO: add custom scalars
+            type: curr.type,
+        }
+        return acc
+    }, {}),
+    additionalProperties: false,
+    required: typesArray.filter((field: any) => field.isRequired).map((field: any) => field.name)
+})
+
+JsonToTS(
+    TSGeneratorSchema as any,
+    "Approval",
+).then((ts: any) => {
+    console.log(ts)
+})
 
 // console.log(schema.getType('Approval')?._fields?.id?.astNode?.name?.value)
 // console.log(schema.getType('Approval')?._fields?.id?.astNode?.type?.kind)
