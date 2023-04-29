@@ -1,3 +1,12 @@
- type Query {
-    hello: String
-  }
+scalar Bytes
+scalar BigInt
+
+type Approval {
+  id: Bytes!
+  owner: Bytes! # address
+  approved: Bytes! # address
+  tokenId: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}

@@ -19,7 +19,10 @@ specifiers:
   eslint-plugin-prettier: ^4.2.1
   ethers: 5.6.1
   graphql: ^16.6.0
+  graphql-compose: ^9.0.10
+  graphql-compose-mongoose: ^9.8.0
   graphql-import: ^1.0.2
+  graphql-scalars: ^1.21.3
   graphql-to-mongodb: ^1.6.5
   graphql-tools: ^8.3.20
   husky: ^8.0.3
@@ -40,7 +43,10 @@ dependencies:
   dotenv: 16.0.3
   ethers: 5.6.1
   graphql: 16.6.0
+  graphql-compose: 9.0.10_graphql@16.6.0
+  graphql-compose-mongoose: 9.8.0_mpfuflksgjszhwdu7iunqqhsce
   graphql-import: 1.0.2_graphql@16.6.0
+  graphql-scalars: 1.21.3_graphql@16.6.0
   graphql-to-mongodb: 1.6.5_graphql@16.6.0
   graphql-tools: 8.3.20_graphql@16.6.0
   mongodb: 5.3.0
@@ -2598,6 +2604,10 @@ packages:
       which: 2.0.2
     dev: true
 
+  /dataloader/2.2.2:
+    resolution: {integrity: sha512-8YnDaaf7N3k/q5HnTJVuzSyLETjoZjVmHc4AeKAzOvKHEFQKcn64OKBfzHYtE9zGjctNM7V9I0MfnUVLpi7M5g==}
+    dev: false
+
   /de-indent/1.0.2:
     resolution: {integrity: sha512-e/1zu3xH5MQryN2zdVaF0OrdNLUbvWxzMbi+iNA6Bky7l1RoP8a2fIbRocyHclXt/arDrrR6lL3TqFD9pMQTsg==}
     dev: false
@@ -3102,6 +3112,43 @@ packages:
     resolution: {integrity: sha512-bzh50DW9kTPM00T8y4o8vQg89Di9oLJVLW/KaOGIXJWP/iqCN6WKYkbNOF04vFLJhwcpYUh9ydh/+5vpOqV4YQ==}
     dev: true
 
+  /graphql-compose-connection/8.2.1_graphql-compose@9.0.10:
+    resolution: {integrity: sha512-75QOx1HusfkLzDlF+RMGoC0UowbZ2R7/xFRIMfbQf1gc6eeRqiGmTWFxHaUYk2WjTAB4dGO7p/gllfwqO0W/TA==}
+    peerDependencies:
+      graphql-compose: ^7.15.0 || ^8.0.0 || ^9.0.0
+    dependencies:
+      graphql-compose: 9.0.10_graphql@16.6.0
+    dev: false
+
+  /graphql-compose-mongoose/9.8.0_mpfuflksgjszhwdu7iunqqhsce:
+    resolution: {integrity: sha512-gf5ss5UkMNqOjdr3AO7K2eF5Ak5bGT8f+eO55oMWtA8CivH5klTfP7d6+p81KaCAN0ClrAyb6qDhWosD4TYL9A==}
+    peerDependencies:
+      graphql-compose: ^7.21.4 || ^8.0.0 || ^9.0.0
+      mongoose: ^7.0.0 || ^6.0.0 || ^5.0.0 || ^4.4.0
+    dependencies:
+      dataloader: 2.2.2
+      graphql-compose: 9.0.10_graphql@16.6.0
+      graphql-compose-connection: 8.2.1_graphql-compose@9.0.10
+      graphql-compose-pagination: 8.3.0_graphql-compose@9.0.10
+      mongoose: 7.0.3
+    dev: false
+
+  /graphql-compose-pagination/8.3.0_graphql-compose@9.0.10:
+    resolution: {integrity: sha512-zZoBhlWD9KnAJ9AUOeFNeoE4Q/zMxZaxg0tR+HFMVNFnw7ENUnIChMWnD2uvmvik+k8Yv304hMF4n81okGVsJw==}
+    peerDependencies:
+      graphql-compose: ^7.15.0 || ^8.0.0 || ^9.0.0
+    dependencies:
+      graphql-compose: 9.0.10_graphql@16.6.0
+    dev: false
+
+  /graphql-compose/9.0.10_graphql@16.6.0:
+    resolution: {integrity: sha512-UsVoxfi2+c8WbHl2pEB+teoRRZoY4mbWBoijeLDGpAZBSPChnqtSRjp+T9UcouLCwGr5ooNyOQLoI3OVzU1bPQ==}
+    dependencies:
+      graphql-type-json: 0.3.2_graphql@16.6.0
+    transitivePeerDependencies:
+      - graphql
+    dev: false
+
   /graphql-import/1.0.2_graphql@16.6.0:
     resolution: {integrity: sha512-//8qdouS1dJIllNqKVSgD60+1u9+pJ3MlD1G8KEwCxVJi8h99dlZgG33DznEfpQAPIH7T/l55WGiLDOuDN1Wsw==}
     deprecated: GraphQL Import has been deprecated and merged into GraphQL Tools, so it will no longer get updates. Use GraphQL Tools instead to stay up-to-date! Check out https://www.graphql-tools.com/docs/migration-from-import for migration and https://the-guild.dev/blog/graphql-tools-v6 for new changes.
@@ -3118,6 +3165,16 @@ packages:
     transitivePeerDependencies:
       - encoding
       - supports-color
+    dev: false
+
+  /graphql-scalars/1.21.3_graphql@16.6.0:
+    resolution: {integrity: sha512-QLWw3BHmqHZMp9JeYmPpjq7JT9aw/H8TpwmWKJEuMSE3+O7Xe7TduQbOLFzbs1q9UxX6CVkc0O1JO/YfkP/pAw==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
+    dependencies:
+      graphql: 16.6.0
+      tslib: 2.5.0
     dev: false
 
   /graphql-tag/2.12.6_graphql@16.6.0:
@@ -3174,6 +3231,14 @@ packages:
       - react
       - react-dom
       - subscriptions-transport-ws
+    dev: false
+
+  /graphql-type-json/0.3.2_graphql@16.6.0:
+    resolution: {integrity: sha512-J+vjof74oMlCWXSvt0DOf2APEdZOCdubEvGDUAlqH//VBYcOYsGgRW7Xzorr44LvkjiuvecWc8fChxuZZbChtg==}
+    peerDependencies:
+      graphql: '>=0.8.0'
+    dependencies:
+      graphql: 16.6.0
     dev: false
 
   /graphql/16.6.0:
