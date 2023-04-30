@@ -1,14 +1,7 @@
 import {join} from "path";
 import {importSchema} from "graphql-import"
-import {composeWithMongoose, composeWithMongooseDiscriminators} from "graphql-compose-mongoose";
-import mongoose from "mongoose";
-import {schemaComposer} from "graphql-compose";
-const { composeMongoose } = require('graphql-compose-mongoose');
 const { makeExecutableSchema } = require('@graphql-tools/schema');
-import { compile as JsonToTS } from 'json-schema-to-typescript'
-import { Bytes32, Uint256, Uint32, Address } from 'soltypes'
-import {BigNumber, Bytes} from 'ethers'
-
+import {compile as JsonToTS, JSONSchema} from 'json-schema-to-typescript'
 
 const schemaPath = join(__dirname, '../schema.graphql');
 const typeDefs = importSchema(schemaPath);
@@ -23,31 +16,41 @@ const typesArray = schema.getType('Approval')?.astNode?.fields.map((field: any) 
     }
 })
 
-console.log(typesArray)
-
-type customScalars = {
-    Bytes: Bytes,
-    BigInt: BigNumber,
-
+const customScalarsMapping: Record<string, any> = {
+    Bytes: {
+        type: 'string',
+        "pattern": "^0x[0-9a-fA-F]{2}$"
+    },
+    BigInt: {
+        anyOf: [
+            { "type": "string" },
+            { "type": "number" }
+        ]
+    },
 }
 
-// TODO: Types for these arrow functions
-const TSGeneratorSchema = ({
+const TSGeneratorSchema: JSONSchema = ({
     title: 'Approval',
     type: 'object',
     properties: typesArray.reduce((acc: any, curr: any) => {
-        acc[curr.name] = {
-            // TODO: add custom scalars
-            type: curr.type,
+        console.log(curr.type)
+        if (customScalarsMapping[curr.type]) {
+            acc[curr.name] = customScalarsMapping[curr.type]
+            return acc
+        } else {
+            acc[curr.name] = {
+                type: curr.type,
+            }
+            return acc
         }
-        return acc
+
     }, {}),
     additionalProperties: false,
-    required: typesArray.filter((field: any) => field.isRequired).map((field: any) => field.name)
+    required: typesArray.filter((field: any) => field.isRequired).map((field: any) => field.name),
 })
-
+// @ts-ignore
 JsonToTS(
-    TSGeneratorSchema as any,
+    TSGeneratorSchema,
     "Approval",
 ).then((ts: any) => {
     console.log(ts)
