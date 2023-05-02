@@ -10,3 +10,17 @@ type Approval {
   blockTimestamp: BigInt!
   transactionHash: Bytes!
 }
+
+type Transfer {
+  id: Bytes
+  owner: Bytes! # address
+  approved: Bytes! # address
+  tokenId: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Query {
+  _dummy: Boolean
+}
