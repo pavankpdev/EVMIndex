@@ -40,3 +40,15 @@ pnpm dev --[type]
 2. `--index-live`: to index only live events
 3. `--index-all`: to index both past logs and live events
     
+## Usage
+
+Update `schema.graphql` file to add new types. 
+And run the following command to generate the typescript types and MongoDB models
+
+```bash
+npm run generate 
+# or
+yarn generate
+# or
+pnpm generate
+```

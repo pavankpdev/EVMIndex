@@ -6,6 +6,7 @@
   "scripts": {
     "build": "tsc & babel src --out-dir dist --copy-files",
     "dev": "npx ts-node -r tsconfig-paths/register src/index",
+    "generate": "npx ts-node src/scripts/build",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "prettier": "prettier --write \"**/*.ts\"",
