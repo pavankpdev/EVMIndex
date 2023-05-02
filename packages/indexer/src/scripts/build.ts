@@ -1,43 +1,142 @@
 import {join} from "path";
 import {importSchema} from "graphql-import"
-import {composeWithMongoose, composeWithMongooseDiscriminators} from "graphql-compose-mongoose";
-import mongoose from "mongoose";
-import {schemaComposer} from "graphql-compose";
-const { composeMongoose } = require('graphql-compose-mongoose');
 const { makeExecutableSchema } = require('@graphql-tools/schema');
+import {
+    GraphQLSchema,
+    getIntrospectionQuery,
+    buildClientSchema,
+    IntrospectionObjectType,
+    GraphQLObjectType
+} from 'graphql';
+import { introspectionFromSchema } from 'graphql/utilities/introspectionFromSchema';
+import {compile, JSONSchema} from 'json-schema-to-typescript'
+import * as TJS from "typescript-json-schema";
+import * as fs from "fs/promises";
+import * as typescript from 'typescript';
+import mongoose from "mongoose";
+import {composeWithMongoose} from "graphql-compose-mongoose";
+
+function getTypesListFromSchema(schema: GraphQLSchema) {
+    const introspection = introspectionFromSchema(schema);
+    const clientSchema = buildClientSchema(introspection);
+    const types = clientSchema.getTypeMap();
+    return Object.values(types).filter((type: any) => (type instanceof GraphQLObjectType && type.name !== 'Query' && type.name !== 'Mutation' && !type.name.startsWith('__'))).map((type: any) => type?.name)
+
+}
 
 const schemaPath = join(__dirname, '../schema.graphql');
 const typeDefs = importSchema(schemaPath);
 const schema = makeExecutableSchema({ typeDefs });
-console.log('=============================')
-console.log(schema.getType('Approval')?._fields?.id)
 
-const models = composeWithMongoose(
-    mongoose.model('Approval', new mongoose.Schema({
+const customScalarsMapping: Record<string, any> = {
+    Bytes: {
+        type: 'string',
+        "pattern": "^0x[0-9a-fA-F]{2}$"
+    },
+    BigInt: {
+        type: 'string',
+    }
+}
 
-    })),
-    schemaComposer as any
-);
+const clearTypes = async () => {
+    try {
+        const typesFilePath = join(__dirname, '../types/generated.ts')
+        const access =  await fs.access(typesFilePath as string, fs.constants.F_OK)
+        console.log("access", access)
+        // delere file if exists
+        await fs.unlink(typesFilePath as string)
+    } catch (error) {
+        console.log('Types not generated yet')
+    }
+}
 
+const clearModels = async (fileName: string) => {
+    try {
+        const modelsFilePath = join(__dirname, `../db/models/${fileName}.ts`)
+        await fs.access(modelsFilePath as string, fs.constants.F_OK)
+        // delere file if exists
+        await fs.unlink(modelsFilePath as string)
+    } catch (error) {
+        console.log(`Model ${fileName} not generated yet`)
+    }
+}
 
-mongoose.connect('mongodb://localhost:27017/nft').then(() => {
-    models.getResolver('createOne').resolve({
-        args: {
-            record: {
-                id: 'Approval',
-                owner: '0x123',
-                approved: '0x123',
-                tokenId: '123',
-                blockNumber: '12',
-                blockTimestamp: '12',
-                transactionHash: '12',
+clearTypes().then(() => {
+    getTypesListFromSchema(schema).map(async (typeName: string) => {
+        await clearModels(typeName)
+        const typesArray = schema.getType(typeName)?.astNode?.fields.map((field: any) => {
+            return {
+                name: field?.name?.value,
+                type: field?.type?.type?.name?.value || field?.type?.name?.value,
+                isRequired: field.type?.kind === 'NonNullType'
             }
-        }
-    })
-        .then((res: any) => {
-            console.log(res)
         })
-})
 
+        const TSGeneratorSchema: JSONSchema = ({
+            title: typeName,
+            type: 'object',
+            properties: typesArray.reduce((acc: any, curr: any) => {
+                if (customScalarsMapping[curr.type]) {
+                    acc[curr.name] = customScalarsMapping[curr.type]
+                    return acc
+                } else {
+                    acc[curr.name] = {
+                        type: curr.type,
+                    }
+                    return acc
+                }
+            }, {}),
+            additionalProperties: false,
+            required: typesArray.filter((field: any) => field.isRequired).map((field: any) => field.name),
+        })
+// @ts-ignore
+        compile(
+            TSGeneratorSchema,
+            "Approval",
+        ).then(async (ts: any) => {
+            console.log(ts)
+            // create Types Directory if doesn't exsist
+            await fs.mkdir(join(__dirname, '../types'), { recursive: true })
+
+            // Write TS to file
+            await fs.appendFile(join(__dirname, '../types/generated.ts'), ts)
+
+            const compilerOptions: typescript.CompilerOptions = {
+                strictNullChecks: true,
+                removeComments: true,
+            };
+            const program = typescript.createProgram([join(__dirname, '../types/generated.ts')], compilerOptions);
+            const schema = TJS.generateSchema(program as any, typeName, {
+                required: true,
+                excludePrivate: true,
+            });
+
+            const modelContent = `
+/* eslint-disable */
+/**
+ * This file was automatically generated by EVMIndex.
+ * DO NOT MODIFY IT. Instead, modify the grapqhl schema file,
+ * and run the build command to regenerate this file again.
+ */
+
+import mongoose from "mongoose";
+const schema = new mongoose.Schema(${JSON.stringify(schema?.properties)});
+export const ${typeName}Model = mongoose.model("${typeName}", schema);
+`
+
+            // create Types Directory if doesn't exsist
+            await fs.mkdir(join(__dirname, '../db/models'), { recursive: true })
+
+            // Write TS to file
+            await fs.writeFile(join(__dirname, `../db/models/${typeName}.ts`), modelContent)
+
+        })
+//
+
+
+
+
+    })
+})
 
 
