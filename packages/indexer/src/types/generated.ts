@@ -5,7 +5,7 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export interface Transfer {
+export interface Approval {
   id?: string;
   owner: string;
   approved: string;
@@ -21,7 +21,7 @@ export interface Transfer {
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export interface Approval {
+export interface Transfer {
   id?: string;
   owner: string;
   approved: string;
