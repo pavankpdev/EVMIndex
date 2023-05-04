@@ -1,0 +1,19 @@
+config:
+  - name: Meka
+    source:
+      address: "0x147923c03Ee14c65eaE13398926E35eA553cEA98"
+      abi: Meka
+      startBlock: 32228054
+    entities:
+      - Transfer
+      - Approval
+    abi:
+      - name: Meka
+        file: ./abis/Meka.json
+    eventHandlers:
+      - event: Transfer(indexed address,indexed address,indexed uint256)
+        handler: handleTransfer
+        file: ./handlers/meka/index.ts
+      - event: Approval(indexed address,indexed address,indexed uint256)
+        handler: handleApproval
+        file: ./handlers/meka/index.ts

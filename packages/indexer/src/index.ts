@@ -1,6 +1,10 @@
 import dotenv from 'dotenv'
 import * as process from 'node:process'
 import * as readline from "readline";
+import fs from "fs/promises";
+import {join} from "path";
+import yaml from "js-yaml";
+
 // CONFIGS
 import { setup } from '@/setup'
 import { connectToDB } from '@/db/connect'
@@ -24,22 +28,28 @@ const run = async () => {
     throwInvalidCmdErr(args[0])
   }
 
-  await connectToDB()
-  console.log('Connected to DB')
+  const fileContents = await fs.readFile(join(__dirname, '../config.yaml'), 'utf8');
+  const configs = yaml.load(fileContents);
 
-  if (
-    args[0] === indexTypes['index-past-logs'] ||
-    args[0] === indexTypes['index-all']
-  ) {
-    await getNftTransferLogs(setup.contracts)
-  }
 
-  if (
-    args[0] === indexTypes['index-live'] ||
-    args[0] === indexTypes['index-all']
-  ) {
-    await setupListeners(setup.contracts)
-  }
+  // TODO: setup listeners from YAML config
+
+  // await connectToDB()
+  // console.log('Connected to DB')
+  //
+  // if (
+  //   args[0] === indexTypes['index-past-logs'] ||
+  //   args[0] === indexTypes['index-all']
+  // ) {
+  //   await getNftTransferLogs(setup.contracts)
+  // }
+  //
+  // if (
+  //   args[0] === indexTypes['index-live'] ||
+  //   args[0] === indexTypes['index-all']
+  // ) {
+  //   await setupListeners(setup.contracts)
+  // }
 }
 
 
