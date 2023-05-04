@@ -1,62 +1,19 @@
-specVersion: 0.0.5
-schema:
-  file: ./schema.graphql
-dataSources:
-  - kind: ethereum
-    name: Meka
-    network: mumbai
+config:
+  - name: Meka
     source:
       address: "0x147923c03Ee14c65eaE13398926E35eA553cEA98"
       abi: Meka
       startBlock: 32228054
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.7
-      language: wasm/assemblyscript
-      entities:
-        - Transfer
-      abis:
-        - name: Meka
-          file: ./abis/Meka.json
-      eventHandlers:
-        - event: Transfer(indexed address,indexed address,indexed uint256)
-          handler: handleTransfer
-      file: ./src/meka.ts
-  - kind: ethereum
-    name: Contract
-    network: mumbai
-    source:
-      address: "0xd1a4818eb093867fdd4db04bef67d0ee7954e4bc"
-      abi: Contract
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.7
-      language: wasm/assemblyscript
-      entities:
-        - ContractTransfer
-      abis:
-        - name: Contract
-          file: ./abis/Contract.json
-      eventHandlers:
-        - event: Transfer(indexed address,indexed address,indexed uint256)
-          handler: handleTransfer
-      file: ./src/contract.ts
-  - kind: ethereum
-    name: Chumbi
-    network: mumbai
-    source:
-      address: "0x86607b5a7aff30a02bc6442455a3213085b13e76"
-      abi: chumbi
-    mapping:
-      kind: ethereum/events
-      apiVersion: 0.0.7
-      language: wasm/assemblyscript
-      entities:
-        - Transfer
-      abis:
-        - name: chumbi
-          file: ./abis/chumbi.json
-      eventHandlers:
-        - event: Transfer(indexed address,indexed address,indexed uint256)
-          handler: handleTransfer
-      file: ./src/chumbi.ts
+    entities:
+      - Transfer
+      - Approval
+    abi:
+      - name: Meka
+        file: ./src/abis/Meka.json
+    eventHandlers:
+      - event: Transfer(indexed address,indexed address,indexed uint256)
+        handler: handleTransfer
+        file: ./src/handler/meka/index.ts
+      - event: Approval(indexed address,indexed address,indexed uint256)
+        handler: handleApproval
+        file: ./src/handler/meka/index.ts
