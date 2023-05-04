@@ -9,11 +9,11 @@ config:
       - Approval
     abi:
       - name: Meka
-        file: ./src/abis/Meka.json
+        file: ./abis/Meka.json
     eventHandlers:
       - event: Transfer(indexed address,indexed address,indexed uint256)
         handler: handleTransfer
-        file: ./src/handler/meka/index.ts
+        file: ./handlers/meka/index.ts
       - event: Approval(indexed address,indexed address,indexed uint256)
         handler: handleApproval
-        file: ./src/handler/meka/index.ts
+        file: ./handlers/meka/index.ts
