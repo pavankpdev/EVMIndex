@@ -32,6 +32,15 @@ cp .env .example.env
 ```
 > NOTE: Update `config.yaml` file to add your contracts and events to be indexed, we'll learn more about this in the upcoming section.
 
+Build the Indexer
+```bash
+npm run build
+# or
+yarn build
+#or
+pnpm build
+```
+
 Run the Indexer
 ```bash
 npm run dev --[type]
