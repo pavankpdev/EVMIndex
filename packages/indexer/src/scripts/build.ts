@@ -30,6 +30,7 @@ const build = async () => {
     for (let i = 0; i < typesList.length; i++) {
         const typeName = typesList[i];
         await deleteGeneratedModels(typeName)
+        // TODO: check for duplicate type names
         await generateTypes({typeName, executableSchema})
         await generateModels(typeName)
     }

@@ -15,6 +15,8 @@ import { indexTypes } from '@/utils/indexTypes'
 import { getNftTransferLogs } from '@/utils/getPastLogs'
 import { throwInvalidCmdErr } from '@/utils/throwInvalidCmdErr'
 import {removeAllListeners} from "@/utils/removeAllListeners";
+import {Config} from "./types/index";
+import {prepareContract} from "@/utils/prepareContract";
 
 dotenv.config()
 
@@ -29,10 +31,10 @@ const run = async () => {
   }
 
   const fileContents = await fs.readFile(join(__dirname, '../config.yaml'), 'utf8');
-  const configs = yaml.load(fileContents);
+  const configs = yaml.load(fileContents) as Config
 
-
-  // TODO: setup listeners from YAML config
+  const listeners = prepareContract(configs.config)
+  await setupListeners(listeners)
 
   // await connectToDB()
   // console.log('Connected to DB')
@@ -60,10 +62,15 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
-rl.on('SIGINT', () => {
+rl.on('SIGINT', async() => {
   console.log('SIGINT received');
-  removeAllListeners(setup.contracts)
+  const fileContents = await fs.readFile(join(__dirname, '../config.yaml'), 'utf8');
+  const configs = yaml.load(fileContents) as Config
+
+  const listeners = prepareContract(configs.config)
+  removeAllListeners(listeners)
       .finally(() => {
     process.exit();
   })
+  process.exit();
 });
