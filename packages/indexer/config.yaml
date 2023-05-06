@@ -6,14 +6,8 @@ config:
       startBlock: 32228054
     entities:
       - Transfer
-      - Approval
-    abi:
-      - name: Meka
-        file: ./abis/Meka.json
     eventHandlers:
-      - event: Transfer(indexed address,indexed address,indexed uint256)
+      - event: Transfer(address,address,uint256)
         handler: handleTransfer
         file: ./handlers/meka/index.ts
-      - event: Approval(indexed address,indexed address,indexed uint256)
-        handler: handleApproval
-        file: ./handlers/meka/index.ts
+        webhook: https://webhook.site/a6dc8801-2e59-4c47-9c1f-7eb04207a05e
