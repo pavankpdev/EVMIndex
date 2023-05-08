@@ -8,7 +8,7 @@ EVMIndex follows a simple and efficient approach to index data from EVM chains. 
 ### Define the schema
 EVMIndex uses a schema defined in the `schema.graphql` file to specify the structure of the indexed data. 
 The schema is written in GraphQL, allowing for flexible and precise data definition.
-You can learn more about defining the schema [here](/docs/schema).
+You can learn more about defining the schema [here](/docs/intro).
 
 ### Build the indexer
 To generate the necessary TypeScript types and MongoDB schema for the defined schema, you need to build the indexer. Run the following command:
