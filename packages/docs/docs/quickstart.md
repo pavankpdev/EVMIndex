@@ -2,7 +2,7 @@
 sidebar_position: 2
 ---
 
-# Installation
+# Quick Start
 
 Clone repository
 ```bash
@@ -30,8 +30,16 @@ Setup ENVs, you might to update the values inside the `.env` file
 ```bash
 cp .env .example.env
 ```
+> NOTE: Update `config.yaml` file to add your contracts and events to be indexed, we'll learn more about this in the upcoming section.
 
-> NOTE: Update `src/setup.ts` file to add your contracts and events to be indexed
+Build the Indexer
+```bash
+npm run build
+# or
+yarn build
+#or
+pnpm build
+```
 
 Run the Indexer
 ```bash
