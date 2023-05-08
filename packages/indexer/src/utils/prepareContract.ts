@@ -17,10 +17,12 @@ export const prepareContract = (config: Contract[]): Listener[] => {
             address: source.address,
             events: eventHandlers.map((eventHandler: EventHandler, i): EventHandler => {
                 const CTX: unknown = generated[entities[i] as keyof typeof generated];
+                const handler: Record<string, any> = require(`@/${eventHandler.file}`);
                 return {
                     event: eventHandler.event,
-                    handler: async (ctx: typeof CTX) => {console.log(ctx)},
+                    handler: async (ctx: typeof CTX) => handler[eventHandler.handler as string](ctx),
                     webhook: eventHandler?.webhook,
+                    file: eventHandler.file
                 }
             })
         }

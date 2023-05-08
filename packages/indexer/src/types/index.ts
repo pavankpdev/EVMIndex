@@ -6,6 +6,7 @@ export type EventHandler = {
     event: string,
     handler: string | HandlerFn,
     webhook?: string,
+    file: string
 }
 
 export type Contract = {
@@ -27,5 +28,5 @@ export type Config = {
 export type Listener = {
     contract: EthersContract,
     address: string,
-    events: EventHandler[]
+    events: Omit<EventHandler, "file">[]
 }

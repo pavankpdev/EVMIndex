@@ -4,7 +4,7 @@ import {ApprovalModel} from "@/db/models/Approval";
 
 export const handleTransfer = async (context: Transfer) => {
     console.log(context)
-    return TransferModel.create(context);
+    // return TransferModel.create(context);
 }
 
 export const handleApproval = async (context: Approval) => {
