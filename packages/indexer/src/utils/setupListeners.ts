@@ -1,4 +1,5 @@
 import {HandlerFn, Listener} from '@/types'
+import {callWebhook} from "@/utils/callWebhook";
 
 
 export async function setupListeners(listeners: Listener[]) {
@@ -10,7 +11,9 @@ export async function setupListeners(listeners: Listener[]) {
       console.log(`Listening for "${event.event}" on ${listener.address}`)
       contract.on(eventFilter, async (...args: unknown[]) => {
         await (event as {handler: HandlerFn}).handler(args);
-        // TODO: Call webhook here
+        if(event?.webhook) {
+           await callWebhook(event.webhook, args)
+        }
       })
     })
   }

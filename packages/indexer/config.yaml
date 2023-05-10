@@ -10,4 +10,4 @@ config:
       - event: Transfer(address,address,uint256)
         handler: handleTransfer
         file: handlers/meka/index.ts
-        webhook: https://webhook.site/a6dc8801-2e59-4c47-9c1f-7eb04207a05e
+        webhook: https://webhook.site/5deb99a5-f68c-431b-b243-01f218689b5c
