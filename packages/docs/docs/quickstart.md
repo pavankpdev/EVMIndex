@@ -30,6 +30,8 @@ Setup ENVs, you might to update the values inside the `.env` file
 ```bash
 cp .env .example.env
 ```
+> NOTE: Update the `schema.graphql` file to define the schema for your data.
+
 > NOTE: Update `config.yaml` file to add your contracts and events to be indexed, we'll learn more about this in the upcoming section.
 
 Build the Indexer

@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_position: 5
 ---
 
 # Configuration
@@ -31,7 +31,7 @@ Each contract in the configuration has the following properties:
 - `startBlock`: Indicates the block number from which the contract's logs should be indexed. This is used for indexing past logs. 
 
 Additionally, contracts can have associated entities and event handlers. The `entities` property is an array that lists the names of the events to be tracked for the contract. 
-The entity name should be unique and should match with the types defined in the schema.
+The entity name should be unique and should match with the types defined in the [schema](schema).
 
 The `eventHandlers` property is another array that defines the event handlers for specific entity. Each event handler consists of the following properties:
 - `event`: Specifies the topic of the event.
