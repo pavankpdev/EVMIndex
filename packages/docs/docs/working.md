@@ -22,6 +22,8 @@ pnpm build
 ```
 TThis command parses the schema file, checks for any errors, and generates the required types and schema. This step ensures that the necessary types are available when writing [handler functions](/docs/intro). 
 
+![Building the indexer](https://dbaugbrwob9sy.cloudfront.net/evm+-+Build%402x.png)
+
 ### Write the handler functions
 EVMIndex utilizes handler functions to process the indexed data. These functions can be written anywhere within the project, but it is recommended to follow the `handlers/<Contract>/<filename.ts>` pattern. 
 Make sure to update these functions in the `config.yaml` file. **Note that the handler functions should have named exports and not default exports**.
