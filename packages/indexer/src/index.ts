@@ -5,18 +5,19 @@ import fs from "fs/promises";
 import {join} from "path";
 import yaml from "js-yaml";
 
-// CONFIGS
-import { setup } from '@/setup'
+// MODELS
 import { connectToDB } from '@/db/connect'
 
-// MODELS
+// UTILS
 import { setupListeners } from '@/utils/setupListeners'
 import { indexTypes } from '@/utils/indexTypes'
-import { getNftTransferLogs } from '@/utils/getPastLogs'
 import { throwInvalidCmdErr } from '@/utils/throwInvalidCmdErr'
 import {removeAllListeners} from "@/utils/removeAllListeners";
-import {Config} from "./types/index";
 import {prepareContract} from "@/utils/prepareContract";
+
+import {Config} from "./types/index";
+import {verifyConfirmations} from "@/utils/verifyConfirmations";
+
 
 dotenv.config()
 
@@ -30,11 +31,13 @@ const run = async () => {
     throwInvalidCmdErr(args[0])
   }
 
-  const fileContents = await fs.readFile(join(__dirname, '../config.yaml'), 'utf8');
-  const configs = yaml.load(fileContents) as Config
+  // const fileContents = await fs.readFile(join(__dirname, '../config.yaml'), 'utf8');
+  // const configs = yaml.load(fileContents) as Config
+  //
+  // const listeners = prepareContract(configs.config)
+  // await setupListeners(listeners)
 
-  const listeners = prepareContract(configs.config)
-  await setupListeners(listeners)
+  console.log(await verifyConfirmations('0xc6d5f39469588724f15bfc74fd9858fbc787fd65fc2735d92bc8c95495ab580b', 100));
 
   // await connectToDB()
   // console.log('Connected to DB')
@@ -51,8 +54,7 @@ const run = async () => {
   //   args[0] === indexTypes['index-all']
   // ) {
   //   await setupListeners(setup.contracts)
-  // }
-}
+  }
 
 
 run()
