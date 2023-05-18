@@ -22,7 +22,8 @@ export const prepareContract = (config: Contract[]): Listener[] => {
                     event: eventHandler.event,
                     handler: async (ctx: typeof CTX) => handler[eventHandler.handler as string](ctx),
                     webhook: eventHandler?.webhook,
-                    file: eventHandler.file
+                    file: eventHandler.file,
+                    confirmations: eventHandler?.confirmations
                 }
             })
         }
