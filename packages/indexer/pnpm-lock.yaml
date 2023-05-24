@@ -32,6 +32,7 @@ specifiers:
   lint-staged: ^13.2.1
   mongodb: ^5.3.0
   mongoose: ^7.0.3
+  node-cron: ^3.0.2
   prettier: ^2.8.7
   soltypes: ^2.0.0
   ts-json-schema-generator: ^1.2.0
@@ -60,6 +61,7 @@ dependencies:
   json-schema-to-typescript: 12.0.0
   mongodb: 5.3.0
   mongoose: 7.0.3
+  node-cron: 3.0.2
   soltypes: 2.0.0
   ts-json-schema-generator: 1.2.0
   typechain: 8.1.1_typescript@5.0.4
@@ -4031,6 +4033,13 @@ packages:
       tslib: 2.5.0
     dev: false
 
+  /node-cron/3.0.2:
+    resolution: {integrity: sha512-iP8l0yGlNpE0e6q1o185yOApANRe47UPbLf4YxfbiNHt/RU5eBcGB/e0oudruheSf+LQeDMezqC5BVAb5wwRcQ==}
+    engines: {node: '>=6.0.0'}
+    dependencies:
+      uuid: 8.3.2
+    dev: false
+
   /node-fetch/2.6.0:
     resolution: {integrity: sha512-8dG4H5ujfvFiqDmVu9fQ5bOHUC15JMjMY/Zumv26oOvvVJjM67KF8koCWIabKQ1GJIa9r2mMZscBq/TbdOcmNA==}
     engines: {node: 4.x || >=6.0.0}
@@ -4882,6 +4891,11 @@ packages:
 
   /uuid/7.0.3:
     resolution: {integrity: sha512-DPSke0pXhTZgoF/d+WSt2QaKMCFSfx7QegxEWT+JOuHF5aWrKEn0G+ztjuJg/gG8/ItK+rbPCD/yNv8yyih6Cg==}
+    hasBin: true
+    dev: false
+
+  /uuid/8.3.2:
+    resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
     hasBin: true
     dev: false
 
