@@ -41,7 +41,7 @@ const run = async () => {
   const blockMiningTime = await getBlockMiningTime(Provider, 100)
 
   const listeners = prepareContract(configs.config)
-  await setupListeners(listeners)
+  await setupListeners(listeners, blockMiningTime)
 
   // console.log(await verifyConfirmations('0xc6d5f39469588724f15bfc74fd9858fbc787fd65fc2735d92bc8c95495ab580b', 100));
 
