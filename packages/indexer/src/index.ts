@@ -8,6 +8,9 @@ import yaml from "js-yaml";
 // MODELS
 import { connectToDB } from '@/db/connect'
 
+// CONFIG
+import {Provider} from "@/config/provider";
+
 // UTILS
 import { setupListeners } from '@/utils/setupListeners'
 import { indexTypes } from '@/utils/indexTypes'
@@ -17,6 +20,7 @@ import {prepareContract} from "@/utils/prepareContract";
 
 import {Config} from "./types/index";
 import {verifyConfirmations} from "@/utils/verifyConfirmations";
+import {getBlockMiningTime} from "@/utils/getBlockMiningTime";
 
 
 dotenv.config()
@@ -31,17 +35,19 @@ const run = async () => {
     throwInvalidCmdErr(args[0])
   }
 
-  // const fileContents = await fs.readFile(join(__dirname, '../config.yaml'), 'utf8');
-  // const configs = yaml.load(fileContents) as Config
-  //
-  // const listeners = prepareContract(configs.config)
-  // await setupListeners(listeners)
+  const fileContents = await fs.readFile(join(__dirname, '../config.yaml'), 'utf8');
+  const configs = yaml.load(fileContents) as Config
 
-  console.log(await verifyConfirmations('0xc6d5f39469588724f15bfc74fd9858fbc787fd65fc2735d92bc8c95495ab580b', 100));
+  const blockMiningTime = await getBlockMiningTime(Provider, 100)
+
+  const listeners = prepareContract(configs.config)
+  await setupListeners(listeners, blockMiningTime)
+
+  // console.log(await verifyConfirmations('0xc6d5f39469588724f15bfc74fd9858fbc787fd65fc2735d92bc8c95495ab580b', 100));
 
   // await connectToDB()
   // console.log('Connected to DB')
-  //
+
   // if (
   //   args[0] === indexTypes['index-past-logs'] ||
   //   args[0] === indexTypes['index-all']
