@@ -16,8 +16,12 @@ export async function setupListeners(listeners: Listener[], blockMiningTime: num
       contract.on(updatedFilter, async (...args: unknown[]) => {
         const timeRequired = blockMiningTime * updatedFilter.confirmations;
         const cron = convertSecondsToCron(timeRequired);
-        const job = nc.schedule(cron, async (blahhh) => {
+
+        const job = nc.schedule(cron, async () => {
           // TODO: Check for confirmations, if confirmed call webhook and handler, else, save it somewhere else
+          // TODO: calculate no of params of the event
+          const txnHash = (args[3] as {transactionHash: string})?.transactionHash;
+          console.log(`Transaction ${txnHash} confirmed!`)
           job.stop();
         })
         await (event as {handler: HandlerFn}).handler(args);
