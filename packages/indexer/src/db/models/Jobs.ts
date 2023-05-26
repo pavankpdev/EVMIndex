@@ -1,10 +1,10 @@
 import * as mongoose from 'mongoose'
-import {BooleanType} from "ts-json-schema-generator";
 
 export interface Jobs {
     txHash: string;
     processed: boolean;
     errored?: boolean;
+    retries: number;
 }
 
 const Schema = {
@@ -19,6 +19,10 @@ const Schema = {
     errored: {
         type: Boolean,
         default: false,
+    },
+    retries: {
+        type: Number,
+        default: 0,
     },
 }
 

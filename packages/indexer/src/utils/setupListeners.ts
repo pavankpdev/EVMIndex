@@ -21,18 +21,18 @@ export async function setupListeners(listeners: Listener[], blockMiningTime: num
         const timeRequired = blockMiningTime * updatedFilter.confirmations;
         const cron = convertSecondsToCron(timeRequired);
 
-        console.log((args.reverse()[0] as {transactionHash: string})?.transactionHash)
+        const txHash = (args.reverse()[0] as {transactionHash: string})?.transactionHash
 
-        // TODO: save txn hash to DB
         await Jobs.create({
-          txHash: `${(args.reverse()[0] as {transactionHash: string})?.transactionHash}`,
+          txHash,
         })
 
         const cronJobParams = {
             args,
             event,
             confirmations: updatedFilter.confirmations,
-            hash: (args.reverse()[0] as {transactionHash: string})?.transactionHash
+            hash: txHash,
+          blockMiningTime
         }
 
         const job = nc.schedule(cron, async () => {
