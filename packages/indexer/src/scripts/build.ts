@@ -1,6 +1,7 @@
 import {join} from "path";
 import {importSchema} from "graphql-import"
 const { makeExecutableSchema } = require('@graphql-tools/schema');
+import fs from "fs/promises";
 import {
     GraphQLSchema,
     buildClientSchema,
@@ -27,13 +28,17 @@ const executableSchema = makeExecutableSchema({ typeDefs });
 const build = async () => {
     await deleteGeneratedTypes();
     const typesList = getTypesListFromSchema(executableSchema);
+    const typeFields: Record<string, string[]> = {}
     for (let i = 0; i < typesList.length; i++) {
         const typeName = typesList[i];
         await deleteGeneratedModels(typeName)
         // TODO: check for duplicate type names
-        await generateTypes({typeName, executableSchema})
+        const types = await generateTypes({typeName, executableSchema})
+        typeFields[typeName] = types.map((type) => type.name)
         await generateModels(typeName)
     }
+
+    await fs.writeFile(join(__dirname, `../config/typeDefs.ts`), `export const typeDefs=${JSON.stringify(typeFields)}`)
 }
 
 build()

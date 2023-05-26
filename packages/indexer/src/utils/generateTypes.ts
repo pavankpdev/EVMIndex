@@ -61,5 +61,7 @@ export const generateTypes = async (params: TypeField) => {
     await fs.mkdir(join(__dirname, "../types"), { recursive: true });
 
     // Write TS to file
-    return fs.appendFile(join(__dirname, "../types/generated.ts"), ts);
+    await fs.appendFile(join(__dirname, "../types/generated.ts"), '');
+
+    return typeFields;
 };

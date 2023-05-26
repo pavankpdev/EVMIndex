@@ -4,6 +4,7 @@ import * as readline from "readline";
 import fs from "fs/promises";
 import {join} from "path";
 import yaml from "js-yaml";
+import nc from 'node-cron'
 
 // MODELS
 import { connectToDB } from '@/db/connect'
@@ -43,23 +44,11 @@ const run = async () => {
   const listeners = prepareContract(configs.config)
   await setupListeners(listeners, blockMiningTime)
 
-  // console.log(await verifyConfirmations('0xc6d5f39469588724f15bfc74fd9858fbc787fd65fc2735d92bc8c95495ab580b', 100));
+  // console.log(await verifyConfirmations('0xe4204902dbffe43ed1e1198d69a00ec22a5a25bbb66154a5b1fa44fd2195380e', 100));
 
-  // await connectToDB()
-  // console.log('Connected to DB')
+  await connectToDB()
+  console.log('Connected to DB')
 
-  // if (
-  //   args[0] === indexTypes['index-past-logs'] ||
-  //   args[0] === indexTypes['index-all']
-  // ) {
-  //   await getNftTransferLogs(setup.contracts)
-  // }
-  //
-  // if (
-  //   args[0] === indexTypes['index-live'] ||
-  //   args[0] === indexTypes['index-all']
-  // ) {
-  //   await setupListeners(setup.contracts)
   }
 
 

@@ -1,13 +1,17 @@
 export function convertSecondsToCron(seconds: number): string {
-    const minutes = Math.floor(seconds / 60);
-    const remainderSeconds = seconds % 60;
+    const targetTime = Date.now() + seconds * 1000;
 
-    console.log(`minutes: ${minutes}, remainderSeconds: ${remainderSeconds}`)
+// Convert the target time to a Date object
+    const targetDate = new Date(targetTime);
 
-    if (minutes === 0) {
-        return `${remainderSeconds} * * * * *`;
-    } else {
-        return `${remainderSeconds} ${minutes} * * * *`;
-    }
+// Extract the individual components (second, minute, hour, day, month, year) from the target date
+    const targetSecond = targetDate.getSeconds();
+    const targetMinute = targetDate.getMinutes();
+    const targetHour = targetDate.getHours();
+    const targetDay = targetDate.getDate();
+    const targetMonth = targetDate.getMonth() + 1; // Months are zero-based, so add 1
+
+// Format the individual components into a cron expression
+    return `${targetSecond} ${targetMinute} ${targetHour} ${targetDay} ${targetMonth} *`;
 }
 

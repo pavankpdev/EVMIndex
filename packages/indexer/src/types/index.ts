@@ -7,7 +7,8 @@ export type EventHandler = {
     handler: string | HandlerFn,
     webhook?: string,
     file: string,
-    confirmations?: number
+    confirmations?: number,
+    eventArgs: string[]
 }
 
 export type Contract = {
