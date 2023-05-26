@@ -13,18 +13,24 @@ export async function setupListeners(listeners: Listener[], blockMiningTime: num
       const eventFilter = contract.filters[event.event]()
       const updatedFilter = { ...eventFilter, confirmations: event.confirmations || DEFAULT_CONFIRMATIONS };
       console.log(`Listening for "${event.event}" on ${listener.address}`)
-      contract.on(updatedFilter, async (...args: unknown[]) => {
-        const timeRequired = blockMiningTime * updatedFilter.confirmations;
-        const cron = convertSecondsToCron(timeRequired);
 
-        const job = nc.schedule(cron, async () => {
-          // TODO: Check for confirmations, if confirmed call webhook and handler, else, save it somewhere else
-          // TODO: calculate no of params of the event
-          const txnHash = (args[3] as {transactionHash: string})?.transactionHash;
-          console.log(`Transaction ${txnHash} confirmed!`)
-          job.stop();
+      contract.on(updatedFilter, async (...args: unknown[]) => {
+        // const timeRequired = blockMiningTime * updatedFilter.confirmations;
+        // const cron = convertSecondsToCron(timeRequired);
+        //
+        // const job = nc.schedule(cron, async () => {
+        //   // TODO: Check for confirmations, if confirmed call webhook and handler, else, save it somewhere else
+        //   // TODO: calculate no of params of the event
+        //   const txnHash = (args[3] as {transactionHash: string})?.transactionHash;
+        //   console.log(`Transaction ${txnHash} confirmed!`)
+        //   job.stop();
+        // })
+        let params: Record<string, any> = {}
+        event.eventArgs.map((ea, i) => {
+            params[ea] = args[i]
         })
-        await (event as {handler: HandlerFn}).handler(args);
+        const txn = args.reverse()[0];
+        await (event as {handler: HandlerFn}).handler({...params, txn});
         if(event?.webhook) {
            await callWebhook(event.webhook, args)
         }
