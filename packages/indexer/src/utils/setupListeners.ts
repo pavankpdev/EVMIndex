@@ -4,6 +4,7 @@ import {callWebhook} from "@/utils/callWebhook";
 import {convertSecondsToCron} from "@/utils/convertSecondsToCron";
 import Jobs from "@/db/models/Jobs";
 import {verifyConfirmations} from "@/utils/verifyConfirmations";
+import {cronJobHandler} from "@/utils/cronJobHandler";
 
 const DEFAULT_CONFIRMATIONS = 5;
 
@@ -27,47 +28,15 @@ export async function setupListeners(listeners: Listener[], blockMiningTime: num
           txHash: `${(args.reverse()[0] as {transactionHash: string})?.transactionHash}`,
         })
 
-        const job = nc.schedule(cron, async () => {
-          const hash = (args.reverse()[0] as {transactionHash: string}).transactionHash;
-          // TODO: Check for confirmations, if confirmed call webhook and handler, else, save it somewhere else
-          const confirmationStatus = await verifyConfirmations(hash, updatedFilter.confirmations);
-          // TODO: calculate no of params of the event
-          if(confirmationStatus) {
-            let params: Record<string, any> = {}
-            event.eventArgs.map((ea, i) => {
-              params[ea] = args[i]
-            })
-            const txn = args.reverse()[0];
-            await (event as {handler: HandlerFn}).handler({...params, txn});
-            if(event?.webhook) {
-              await callWebhook(event.webhook, args)
-            }
+        const cronJobParams = {
+            args,
+            event,
+            confirmations: updatedFilter.confirmations,
+            hash: (args.reverse()[0] as {transactionHash: string})?.transactionHash
+        }
 
-            const txnHash = (args[3] as {transactionHash: string})?.transactionHash;
-            console.log(`Transaction ${txnHash} confirmed!`)
-            await Jobs.findOne(
-                {
-                  txHash: hash
-                },
-                {
-                  $set: {
-                    processed: true
-                  }
-                }
-            )
-          } else {
-            console.log(`Transaction ${args[3]} not confirmed yet, manual check required for ${hash}`)
-            await Jobs.findOne(
-                {
-                  txHash: hash
-                },
-                {
-                  $set: {
-                    errored: true
-                  }
-                }
-            )
-          }
+        const job = nc.schedule(cron, async () => {
+          await cronJobHandler(cronJobParams)
           job.stop();
         })
       })
