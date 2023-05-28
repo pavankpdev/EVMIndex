@@ -2,7 +2,7 @@
   "name": "EVMIndex",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "build": "tsc & babel src --out-dir dist --copy-files",
     "dev": "npx ts-node -r tsconfig-paths/register src/index",
@@ -20,6 +20,7 @@
     "@babel/core": "^7.21.4",
     "@babel/preset-env": "^7.21.4",
     "@babel/preset-typescript": "^7.21.4",
+    "@ethersproject/abstract-provider": "^5.7.0",
     "@types/node": "^18.15.11",
     "@types/node-cron": "^3.0.7",
     "@typescript-eslint/eslint-plugin": "^5.58.0",
@@ -84,6 +85,7 @@
     "node-cron": "^3.0.2",
     "soltypes": "^2.0.0",
     "ts-json-schema-generator": "^1.2.0",
+    "ts-node": "^10.9.1",
     "typechain": "^8.1.1",
     "typescript-json-schema": "^0.56.0"
   }

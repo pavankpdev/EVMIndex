@@ -4,7 +4,7 @@ import * as readline from "readline";
 import fs from "fs/promises";
 import {join} from "path";
 import yaml from "js-yaml";
-import nc from 'node-cron'
+import {Worker} from 'worker_threads'
 
 // MODELS
 import { connectToDB } from '@/db/connect'
@@ -22,6 +22,7 @@ import {prepareContract} from "@/utils/prepareContract";
 import {Config} from "./types/index";
 import {verifyConfirmations} from "@/utils/verifyConfirmations";
 import {getBlockMiningTime} from "@/utils/getBlockMiningTime";
+import {timeTakingFunction} from "@/worker";
 
 
 dotenv.config()
@@ -49,23 +50,62 @@ const run = async () => {
 
   }
 
+// run()
+//
+// const rl = readline.createInterface({
+//   input: process.stdin,
+//   output: process.stdout
+// });
+//
+// rl.on('SIGINT', async() => {
+//   console.log('SIGINT received');
+//   const fileContents = await fs.readFile(join(__dirname, '../config.yaml'), 'utf8');
+//   const configs = yaml.load(fileContents) as Config
+//
+//   const listeners = prepareContract(configs.config)
+//   removeAllListeners(listeners)
+//       .finally(() => {
+//     process.exit();
+//   })
+//   process.exit();
+// });
 
-run()
+const worker = new Worker(`${__dirname}/__worker.js`, {
+    workerData: {
+      path: `${__dirname}/worker.ts`
+    }
+});
+
+// Listen to messages from the worker thread
+worker.once( "message", (result) => {
+  console.log(result);
+});
+
+// Listen for uncaught exceptions from the worker thread
+worker.on( "error" , (error) => {
+  console.log(error);
+});
+
+// Listen for the exit event
+worker.on("exit", async (exitCode) => {
+    console.log(exitCode);
+  console.log("Executed in the main thread");
+})
 
 const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
+    input: process.stdin,
+    output: process.stdout
 });
 
 rl.on('SIGINT', async() => {
-  console.log('SIGINT received');
-  const fileContents = await fs.readFile(join(__dirname, '../config.yaml'), 'utf8');
-  const configs = yaml.load(fileContents) as Config
+    console.log('SIGINT received');
+    const fileContents = await fs.readFile(join(__dirname, '../config.yaml'), 'utf8');
+    const configs = yaml.load(fileContents) as Config
 
-  const listeners = prepareContract(configs.config)
-  removeAllListeners(listeners)
-      .finally(() => {
+    const listeners = prepareContract(configs.config)
+    removeAllListeners(listeners)
+        .finally(() => {
+            process.exit();
+        })
     process.exit();
-  })
-  process.exit();
 });

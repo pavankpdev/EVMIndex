@@ -1,4 +1,4 @@
-import {Provider as provider} from "@/config/provider";
+import {Provider as provider} from "../config/provider";
 
 export async function verifyConfirmations(transactionHash: string, requiredConfirmations: number): Promise<{status: boolean, confirmation: number}> {
     const receipt = await provider.getTransactionReceipt(transactionHash);
