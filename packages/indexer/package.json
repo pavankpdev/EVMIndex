@@ -1,8 +1,8 @@
 {
-  "name": "EVMIndex",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.ts",
+  "name": "evmindex",
+  "version": "1.0.14",
+  "description": "**EVMIndex** is a plug-and-play blockchain indexer for EVM chains, designed to simplify the process of indexing and retrieving blockchain data. With **EVMIndex**, you can easily set up your own EVM chain indexer on your infrastructure and use simple APIs to retrieve the indexed data.",
+  "main": "dist/index.js",
   "scripts": {
     "build": "tsc & babel src --out-dir dist --copy-files",
     "dev": "npx ts-node -r tsconfig-paths/register src/index",
@@ -13,8 +13,8 @@
     "prettier:check": "prettier --check \"**/*.ts\""
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "pavankpdev",
+  "license": "MIT",
   "devDependencies": {
     "@babel/cli": "^7.21.0",
     "@babel/core": "^7.21.4",
@@ -88,5 +88,13 @@
     "ts-node": "^10.9.1",
     "typechain": "^8.1.1",
     "typescript-json-schema": "^0.56.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pavankpdev/EVMIndex.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pavankpdev/EVMIndex/issues"
+  },
+  "homepage": "https://github.com/pavankpdev/EVMIndex#readme"
 }

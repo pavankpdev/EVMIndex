@@ -1,5 +1,5 @@
 import nc from 'node-cron'
-import {Listener} from '@/types'
+import {Listener} from '../types'
 import {convertSecondsToCron} from "../utils/convertSecondsToCron";
 import Jobs from "../db/models/Jobs";
 import {cronJobHandler} from "../utils/cronJobHandler";

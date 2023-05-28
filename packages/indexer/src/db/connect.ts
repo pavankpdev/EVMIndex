@@ -1,8 +1,9 @@
 import * as mongoose from 'mongoose'
 
-export const connectToDB = async () => {
+export const connectToDB = async (uri: string) => {
   try {
-    return mongoose.connect(process.env.MONGO_URL as string)
+    if(!uri) throw new Error('MonoDB URI not provided')
+    return mongoose.connect(uri)
   } catch (error) {
     console.log(error)
   }
