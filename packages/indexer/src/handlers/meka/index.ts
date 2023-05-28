@@ -1,9 +1,6 @@
+import {Transfer} from "@/types/generated";
+import {Log} from "@ethersproject/abstract-provider";
 
-export const handleTransfer = async (context: any) => {
-    console.log(context)
-    // return TransferModel.create(context);
-}
-
-export const handleApproval = async (context: any) => {
+export const handleTransfer = async (context: Transfer & {txn: Log}) => {
     console.log(context)
 }
