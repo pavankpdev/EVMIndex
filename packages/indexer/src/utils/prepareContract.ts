@@ -22,49 +22,7 @@ export const prepareContract = (config: Contract[]): Listener[] => {
 
                 if(!event) throw new Error(`Event ${entityType} not found in ABI`);
 
-
-
-                // const TSGeneratorSchema: JSONSchema = {
-                //     title: entityType,
-                //     type: "object",
-                //     properties: event.inputs.reduce((acc: any, curr: any) => {
-                //         if(curr.type.includes('uint')){
-                //             acc[curr.name] = {
-                //                 type: "number",
-                //             }
-                //             return acc;
-                //         }
-                //         else if (typesMapping[curr.type]) {
-                //             acc[curr.name] = {
-                //                 type: typesMapping[curr.type]
-                //             }
-                //             return acc;
-                //         } else {
-                //             acc[curr.name] = {
-                //                 type: curr.type,
-                //             };
-                //             return acc;
-                //         }
-                //     }, {}),
-                //     additionalProperties: false,
-                //     bannerComment: '',
-                //     required: event.inputs
-                //         .map((field: any) => field.name),
-                // };
-                //
-                // compile(TSGeneratorSchema, entityType)
-                //     .then( async (ts) => {
-                //         console.log("ts", ts)
-                //         // create Types Directory if doesn't exist
-                //         await fs.mkdir(join(__dirname, "../types"), { recursive: true });
-                //
-                //         // Write TS to file
-                //         await fs.appendFile(join(__dirname, "../types/generated.ts"), ts);
-                //     })
-
                 const eventInputs = event.inputs.map((input: Record<string, string>) => input.name);
-
-                console.log(entityType, eventInputs)
 
                 const handler: Record<string, any> = require(`@/${eventHandler.file}`);
                 return {
