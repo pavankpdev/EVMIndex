@@ -26,7 +26,7 @@ export const cronJobHandler = async (params: Params) => {
         const txn = args.reverse()[0];
         await (event as {handler: HandlerFn}).handler({...params, txn});
         if(event?.webhook) {
-            await callWebhook(event.webhook, args)
+            await callWebhook(event.webhook, {...params, txn})
         }
 
         await Jobs.findOne(
