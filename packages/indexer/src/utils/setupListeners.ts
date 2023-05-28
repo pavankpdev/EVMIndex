@@ -1,9 +1,7 @@
 import nc from 'node-cron'
-import {HandlerFn, Listener} from '@/types'
-import {callWebhook} from "@/utils/callWebhook";
+import {Listener} from '@/types'
 import {convertSecondsToCron} from "@/utils/convertSecondsToCron";
 import Jobs from "@/db/models/Jobs";
-import {verifyConfirmations} from "@/utils/verifyConfirmations";
 import {cronJobHandler} from "@/utils/cronJobHandler";
 
 const DEFAULT_CONFIRMATIONS = 5;

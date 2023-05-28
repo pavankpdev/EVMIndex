@@ -44,8 +44,6 @@ const run = async () => {
   const listeners = prepareContract(configs.config)
   await setupListeners(listeners, blockMiningTime)
 
-  // console.log(await verifyConfirmations('0xe4204902dbffe43ed1e1198d69a00ec22a5a25bbb66154a5b1fa44fd2195380e', 100));
-
   await connectToDB()
   console.log('Connected to DB')
 

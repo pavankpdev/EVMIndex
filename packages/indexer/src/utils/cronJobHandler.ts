@@ -2,7 +2,6 @@ import {verifyConfirmations} from "@/utils/verifyConfirmations";
 import {EventHandler, HandlerFn} from "@/types";
 import {callWebhook} from "@/utils/callWebhook";
 import Jobs from "@/db/models/Jobs";
-import jobs from "@/db/models/Jobs";
 import nc from "node-cron";
 import {convertSecondsToCron} from "@/utils/convertSecondsToCron";
 
@@ -30,7 +29,6 @@ export const cronJobHandler = async (params: Params) => {
             await callWebhook(event.webhook, args)
         }
 
-        console.log(`Transaction ${hash} confirmed!`)
         await Jobs.findOne(
             {
                 txHash: hash
@@ -43,11 +41,8 @@ export const cronJobHandler = async (params: Params) => {
         )
     } else {
         const currentJob = await Jobs.findOne({txHash: hash})
-        console.log('Current Job')
-        console.log(currentJob)
         if(currentJob && currentJob?.retries <=3) {
             console.log(`Transaction ${args[3]} not confirmed yet, retrying for ${hash}, retry count: ${currentJob.retries + 1}`)
-            // TODO: recursively check for confirmation, retry upto 3 times
             await Jobs.findOneAndUpdate(
                 {
                     txHash: hash
