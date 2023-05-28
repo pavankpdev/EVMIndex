@@ -1,8 +1,8 @@
 import nc from 'node-cron'
 import {Listener} from '@/types'
-import {convertSecondsToCron} from "@/utils/convertSecondsToCron";
-import Jobs from "@/db/models/Jobs";
-import {cronJobHandler} from "@/utils/cronJobHandler";
+import {convertSecondsToCron} from "../utils/convertSecondsToCron";
+import Jobs from "../db/models/Jobs";
+import {cronJobHandler} from "../utils/cronJobHandler";
 
 const DEFAULT_CONFIRMATIONS = 5;
 
@@ -19,7 +19,9 @@ export async function setupListeners(listeners: Listener[], blockMiningTime: num
         const timeRequired = blockMiningTime * updatedFilter.confirmations;
         const cron = convertSecondsToCron(timeRequired);
 
-        const txHash = (args.reverse()[0] as {transactionHash: string})?.transactionHash
+        const argsCopy = Array.from(args);
+
+        const txHash = (argsCopy.reverse()[0] as {transactionHash: string})?.transactionHash
 
         await Jobs.create({
           txHash,

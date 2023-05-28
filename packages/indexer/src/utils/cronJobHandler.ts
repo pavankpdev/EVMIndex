@@ -1,9 +1,9 @@
-import {verifyConfirmations} from "@/utils/verifyConfirmations";
-import {EventHandler, HandlerFn} from "@/types";
-import {callWebhook} from "@/utils/callWebhook";
-import Jobs from "@/db/models/Jobs";
+import {verifyConfirmations} from "../utils/verifyConfirmations";
+import {EventHandler, HandlerFn} from "../types";
+import {callWebhook} from "../utils/callWebhook";
+import Jobs from "../db/models/Jobs";
 import nc from "node-cron";
-import {convertSecondsToCron} from "@/utils/convertSecondsToCron";
+import {convertSecondsToCron} from "../utils/convertSecondsToCron";
 
 type Params = {
     args: unknown[],
