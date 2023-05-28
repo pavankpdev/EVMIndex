@@ -57,6 +57,8 @@ export const generateTypes = async (params: TypeField) => {
 
     const ts = await compile(TSGeneratorSchema, typeName);
 
+    console.log(ts)
+
     // create Types Directory if doesn't exist
     await fs.mkdir(join(__dirname, "../types"), { recursive: true });
 
