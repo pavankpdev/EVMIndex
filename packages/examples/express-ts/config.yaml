@@ -1,0 +1,13 @@
+config:
+  - name: Meka
+    source:
+      address: "0x147923c03Ee14c65eaE13398926E35eA553cEA98"
+      abi: Meka
+      startBlock: 32228054
+    entities:
+      - Transfer
+    eventHandlers:
+      - event: Transfer(address,address,uint256)
+        handler: handleTransfer
+        file: meka/index.ts
+        confirmations: 100
