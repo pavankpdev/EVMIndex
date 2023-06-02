@@ -1,21 +1,57 @@
-
 # EVMIndex
 
-**EVMIndex** is a plug-and-play blockchain indexer for EVM chains, designed to simplify the process of indexing and retrieving blockchain data. With **EVMIndex**, you can easily set up your own EVM chain indexer on your infrastructure and use simple APIs to retrieve the indexed data.
+Welcome to EVM Index - a simple and lightweight indexer for EVM chains that allows you to easily index and retrieve data.
+With EVM Index, you can easily set up your own indexer on your infrastructure and configure it using a simple config file.
 
-### Documentation
-[evmindex.dev](https://www.evmindex.dev/docs/intro)
+Plus, with real-time event notifications using webhooks, you can stay up-to-date on the latest data changes on the chain.
+Start exploring EVM Index today and simplify your blockchain data retrieval process.
+
+Documentation [here](https://www.evmindex.dev/)
+
+Examples [here](https://github.com/pavankpdev/EVMIndex/tree/main/packages/examples/express-ts)
+
 
 ## Features
 
 - Plug-and-play setup for EVM chain indexing
-- Self-hosted solution for maximum control and privacy
-- Simple APIs for easy data retrieval
+- Self-hosted solution.
+- Simplified configuration using a simple config file
 - Lightweight design for efficient performance
 - Webhooks for real-time event notifications
 
-## Installation
-This is a monorepo, so you need to install the dependencies for each package separately.
-You can use `npm`, `yarn` or `pnpm` to install the dependencies.
+## Examples
+1. [NodeJs and Express with TypeScript](https://github.com/pavankpdev/EVMIndex/tree/main/packages/examples/express-ts)
 
-You can run `cd <package-name>` to go to the package directory and run the commands specified in the Readme Docs.
+### What you'll need
+
+- [Node.js](https://nodejs.org/en/download/) version 16.14 or above:
+    - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
+- RPC endpoint for the chain you want to index
+- MongoDB databasectory and run the commands specified in the Readme Docs.
+# Quick Start
+
+```bash
+npm install evmindex
+#or
+yarn add evmindex
+#or
+pnpm add evmindex
+```
+
+## Configuration
+To set up the configuration file for EVMIndex, please refer to the sample configuration file available [here](/config.md).
+
+## Running EVMIndex
+Initialize the EVMIndex instance with the configuration file path and start the indexer.
+
+```typescript
+import EVMIndex from 'evmindex';
+
+EVMIndex.init({
+    mongoUri: '<mongodb uri>',
+    configFilePath: join(__dirname, '../config.yaml'),
+    providerUrl: '<RPC url>',
+    ABIPath: `${__dirname}/abis`,
+    handlerPath: `${__dirname}/handlers`
+})
+```
