@@ -5,55 +5,13 @@ sidebar_position: 3
 # How it works? 
 EVMIndex follows a simple and efficient approach to index data from EVM chains. Here's an overview of how it works:
 
-### Define the schema
-EVMIndex uses a schema defined in the `schema.graphql` file to specify the structure of the indexed data. 
-The schema is written in GraphQL, allowing for flexible and precise data definition.
-You can learn more about defining the schema [here](/docs/intro).
+![Building the indexer](https://dbaugbrwob9sy.cloudfront.net/How+it+works.png)
 
-### Build the indexer
-To generate the necessary TypeScript types and MongoDB schema for the defined schema, you need to build the indexer. Run the following command:
-
-```bash
-npm run build
-# or
-yarn build
-#or
-pnpm build
-```
-TThis command parses the schema file, checks for any errors, and generates the required types and schema. This step ensures that the necessary types are available when writing [handler functions](/docs/intro). 
-
-![Building the indexer](https://dbaugbrwob9sy.cloudfront.net/evm+-+Build%402x.png)
-
-### Write the handler functions
-EVMIndex utilizes handler functions to process the indexed data. These functions can be written anywhere within the project, but it is recommended to follow the `handlers/<Contract>/<filename.ts>` pattern. 
-Make sure to update these functions in the `config.yaml` file. **Note that the handler functions should have named exports and not default exports**.
-
-### Define the config file
-In the config.yaml file, define the contracts and events that you want to index. This configuration file specifies the contracts to monitor and the corresponding events to capture.
-Learn more about the config file [here](/docs/config).
-
-### Run the indexer 
-Once the configuration is set, you can start the indexer in three different modes:
-
-1. `--index-past-logs`: Indexes only past logs
-2. `--index-live`: Indexes only live events
-3. `--index-all`: Indexes both past logs and live events
-4. 
-To start the indexer, run the following command:
-
-```bash
-npm run dev --[type]
-# or
-yarn dev --[type]
-#or
-pnpm dev --[type]
-```
-Replace `[type]` with the desired indexing mode.
-
-Refer to [Types of Indexing](/docs/indexingtypes) for more information on these modes and their functionalities.
-
-### Congratulations
-You have successfully set up and started using EVMIndex to index data from EVM chains.
+- Contract events are emitted and picked up by the EVMIndex.
+- The indexer parses the events and schedules a CRON job for confirmation checks.
+- The confirmation count, specified in the config file, determines the number of confirmations required (up to a limit of 100).
+- If the confirmation check is successful, the webhook and handler are triggered to handle the event.
+- In case of failure, the confirmation check is retried up to three times before marking it as a failure.
 
 ## What EVMIndex doesn't do?
 
