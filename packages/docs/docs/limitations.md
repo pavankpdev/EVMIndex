@@ -1,5 +1,5 @@
 ---
-sidebar_position: 8
+sidebar_position: 7
 ---
 
 # Limitations
@@ -18,4 +18,4 @@ EVM Index currently supports exporting models only for MongoDB. However, it is s
 ### Limited to EVM Chains
 EVM Index is specifically tailored to index EVM chains and does not offer support for other chains like Substrate, Solana, etc. The focus is currently on EVM chains. However, efforts are underway to introduce support for additional chains in the future.
 
-It is crucial to be aware of these limitations and assess their impact based on the specific requirements and constraints of your project.
+  
