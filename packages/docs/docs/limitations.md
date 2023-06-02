@@ -12,9 +12,6 @@ EVM Index relies on the RPC endpoint to index data from the chain. If the RPC en
 ### Indexing Speed
 While the Indexer is designed to be efficient and lightweight, the speed of indexing is still influenced by the RPC endpoint and the underlying infrastructure provided. It's essential to consider these factors while managing expectations regarding indexing performance.
 
-### Database Support
-EVM Index currently supports exporting models only for MongoDB. However, it is still possible to use any desired database by defining the models and setting up the connection manually. The flexibility to choose an alternative database is available despite the default support for MongoDB.
-
 ### Limited to EVM Chains
 EVM Index is specifically tailored to index EVM chains and does not offer support for other chains like Substrate, Solana, etc. The focus is currently on EVM chains. However, efforts are underway to introduce support for additional chains in the future.
 
