@@ -1,4 +1,4 @@
-import {ethers, Contract as EthersContract} from "ethers";
+import {Contract as EthersContract} from "ethers";
 
 export type HandlerFn = (ctx: unknown) => Promise<void>
 
@@ -11,19 +11,20 @@ export type EventHandler = {
     eventArgs: string[]
 }
 
-export type Contract = {
-    name: string
-    source: {
-        address: string
-        startBlock: number | string,
-        abi: string
-    }
-    entities: string[]
-    eventHandlers: EventHandler[]
+export type ContractOptions = {
+    name: string,
+    address: string
+    abi: string
+}
+
+export type RegisterContractOptions = ContractOptions & {
+    startBlock: number | string,
+    webhooks?: string | string[],
+    handlers?: (param: unknown) => void,
 }
 
 export type Config = {
-    config: Contract[]
+    config: ContractOptions[]
 }
 
 
