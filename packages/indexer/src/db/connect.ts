@@ -1,10 +1,10 @@
-import * as mongoose from 'mongoose'
-
-export const connectToDB = async (uri: string) => {
-  try {
-    if(!uri) throw new Error('MonoDB URI not provided')
-    return mongoose.connect(uri)
-  } catch (error) {
-    console.log(error)
-  }
+import { createRxDatabase } from 'rxdb';
+import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
+export async function connectToDB() {
+  return createRxDatabase({
+    name: 'evmindex',                   // <- name
+    storage: getRxStorageDexie(),       // <- RxStorage
+    multiInstance: true,                // <- multiInstance (optional, default: true)
+    eventReduce: true,                  // <- eventReduce (optional, default: false)
+  });
 }
