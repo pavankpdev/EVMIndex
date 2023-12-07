@@ -1,3 +1,4 @@
-export class EVMIndex {
 
+export class EVMIndex {
+    constructor() {}
 }
