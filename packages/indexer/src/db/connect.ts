@@ -1,10 +1,31 @@
 import { createRxDatabase } from 'rxdb';
 import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
-export async function connectToDB() {
-  return createRxDatabase({
-    name: 'evmindex',                   // <- name
-    storage: getRxStorageDexie(),       // <- RxStorage
-    multiInstance: true,                // <- multiInstance (optional, default: true)
-    eventReduce: true,                  // <- eventReduce (optional, default: false)
-  });
+
+export class DatabaseConnection {
+  private static _instance: DatabaseConnection;
+  private _db: any;
+
+  private constructor() {
+    this._db = this.connectToDB();
+  }
+
+  private async connectToDB() {
+    return createRxDatabase({
+      name: 'evmindex',
+      storage: getRxStorageDexie(),
+      multiInstance: true,
+      eventReduce: true,
+    });
+  }
+
+  public static getInstance(): DatabaseConnection {
+    if (!DatabaseConnection._instance) {
+      DatabaseConnection._instance = new DatabaseConnection();
+    }
+    return DatabaseConnection._instance;
+  }
+
+  public getDB() {
+    return this._db;
+  }
 }
