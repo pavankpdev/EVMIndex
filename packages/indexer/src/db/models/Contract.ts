@@ -38,8 +38,14 @@ export type ContractType = ExtractDocumentTypeFromTypedRxJsonSchema<typeof schem
 // create the typed RxJsonSchema from the literal typed object.
 export const ContractSchema: RxJsonSchema<ContractType> = ContractSchemaLiteral;
 
-export const getContractCollection = async (db: RxDatabase) =>  db.addCollections({
-    contracts: {
-        schema: ContractSchema,
+export const getContractCollection = async (db: RxDatabase) => {
+    if (!db.collections.contracts) {
+        await db.addCollections({
+            contracts: {
+                schema: ContractSchemaLiteral,
+            },
+        });
     }
-})
+    return db.collections.contracts;
+};
+

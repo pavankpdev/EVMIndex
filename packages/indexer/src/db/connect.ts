@@ -1,3 +1,4 @@
+import "fake-indexeddb/auto";
 import { createRxDatabase } from 'rxdb';
 import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
 
@@ -6,7 +7,9 @@ export class DatabaseConnection {
   private _db: any;
 
   private constructor() {
-    this._db = this.connectToDB();
+    this.connectToDB().then((rxdb) => {
+      this._db = rxdb
+    })
   }
 
   private async connectToDB() {
