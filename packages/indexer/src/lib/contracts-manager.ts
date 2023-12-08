@@ -2,7 +2,7 @@ import {DatabaseConnection} from "@/db/connect";
 import {RegisterContractOptions} from "@/types";
 import {ContractType, getContractCollection} from "@/db/models/Contract";
 import {v4 as uuid} from "uuid"
-import {RxDatabase} from "rxdb";
+import {RxDatabase, RxDocument} from "rxdb";
 
 export class ContractsManager {
     private _dbConnection: RxDatabase;
@@ -16,7 +16,7 @@ export class ContractsManager {
         return contracts.find().exec();
     }
 
-    async getContractById(id: string): Promise<ContractType | null> {
+    async getContractById(id: string): Promise<ContractType & RxDocument | null> {
         const contracts = await getContractCollection(this._dbConnection)
         return contracts.findOne({
             selector: {
@@ -38,46 +38,45 @@ export class ContractsManager {
         }).exec();
     }
 
-    // async registerContract(contract: RegisterContractOptions) {
-    //     const contracts = await this.getContractByAddress(contract.address);
-    //     if (contracts) {
-    //         throw new Error(`Contract with address ${contract.address} already exists`);
-    //     }
-    //     const cid = uuid();
-    //     await this._dbConnection.contracts.insert({
-    //         id: cid,
-    //         name: contract.name,
-    //         address: contract.address,
-    //         abi: contract.abi,
-    //         startBlock: contract.startBlock,
-    //         webhooks: contract.webhooks,
-    //     });
-    //     return cid;
-    // }
+    async registerContract(contract: RegisterContractOptions) {
+        const contracts = await getContractCollection(this._dbConnection)
+        const cid = uuid();
+        await contracts.insert({
+            id: cid,
+            name: contract.name,
+            address: contract.address,
+            abi: contract.abi,
+            startBlock: contract.startBlock,
+            webhooks: contract.webhooks,
+        });
+        return cid;
+    }
     //
-    // async updateContractById(id: string, contract: RegisterContractOptions) {
-    //     const contracts = await this.getContractById(id);
-    //     if (!contracts) {
-    //         throw new Error(`Contract with id ${id} does not exist`);
-    //     }
-    //     await this._dbConnection.contracts.findOneAndUpdate({id}, {
-    //         name: contract.name,
-    //         address: contract.address,
-    //         abi: contract.abi,
-    //         startBlock: contract.startBlock,
-    //         webhooks: contract.webhooks,
-    //     });
-    //
-    //     return true;
-    // }
-    //
-    // async deleteContractById(id: string) {
-    //     const contracts = await this.getContractById(id);
-    //     if (!contracts) {
-    //         throw new Error(`Contract with id ${id} does not exist`);
-    //     }
-    //     await this._dbConnection.contracts.findOneAndRemove({id});
-    //     return true;
-    // }
+    async updateContractById(id: string, contractInput: RegisterContractOptions) {
+        const contract = await this.getContractById(id);
+        if (!contract) {
+            throw new Error(`Contract with id ${id} does not exist`);
+        }
+
+        await contract.update({
+            $set: {
+                name: contractInput.name,
+                address: contractInput.address,
+                abi: contractInput.abi,
+                startBlock: contractInput.startBlock,
+                webhooks: contractInput.webhooks,
+            }
+        })
+
+        return true;
+    }
+
+    async deleteContractById(id: string) {
+        const contract = await this.getContractById(id);
+        if (!contract) {
+            throw new Error(`Contract with id ${id} does not exist`);
+        }
+        return contract.remove()
+    }
 
 }

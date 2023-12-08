@@ -1,6 +1,7 @@
 import "fake-indexeddb/auto";
-import { createRxDatabase } from 'rxdb';
+import { createRxDatabase, addRxPlugin } from 'rxdb';
 import { getRxStorageDexie } from 'rxdb/plugins/storage-dexie';
+import { RxDBUpdatePlugin } from 'rxdb/plugins/update';
 
 export class DatabaseConnection {
   private static _instance: DatabaseConnection;
@@ -13,6 +14,8 @@ export class DatabaseConnection {
   }
 
   private async connectToDB() {
+    addRxPlugin(RxDBUpdatePlugin);
+
     return createRxDatabase({
       name: 'evmindex',
       storage: getRxStorageDexie(),
