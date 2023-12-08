@@ -10,8 +10,13 @@ describe('ContractsManager class', () => {
         webhooks: []
     }
 
-    beforeEach(() => {
+    beforeEach(async () => {
         contractManager = new ContractsManager();
+    });
+
+    afterEach(async () => {
+        const contractManager = new ContractsManager();
+        await contractManager.deleteAllContracts()
     });
 
     it("should be able to create an instance", () => {
@@ -76,6 +81,23 @@ describe('ContractsManager class', () => {
         expect(contractById?.id).toEqual(cid);
         expect(contractByAddress?.id).toEqual(cid);
 
+    });
+
+    it('should be able to get all contracts', async () => {
+        const cid = await contractManager.registerContract(testContract);
+        const contracts = await contractManager.getAllContracts();
+
+        expect(cid).toBeDefined();
+        expect(contracts).toBeDefined();
+        expect(contracts.length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('should be able to get null if contract doesn\'t exisit ', async () => {
+        const contractById = await contractManager.getContractById("invalid-id");
+        const contractByAddress = await contractManager.getContractByAddress("invalid-address");
+
+        expect(contractById).toBeNull();
+        expect(contractByAddress).toBeNull();
     });
 });
 

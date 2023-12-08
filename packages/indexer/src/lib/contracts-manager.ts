@@ -4,6 +4,8 @@ import {ContractType, getContractCollection} from "@/db/models/Contract";
 import {v4 as uuid} from "uuid"
 import {RxDatabase, RxDocument} from "rxdb";
 
+type Contract = ContractType & RxDocument
+
 export class ContractsManager {
     private _dbConnection: RxDatabase;
 
@@ -11,12 +13,12 @@ export class ContractsManager {
         this._dbConnection = DatabaseConnection.getInstance().getDB();
     }
 
-    async getContracts(): Promise<ContractType[]> {
+    async getAllContracts(): Promise<Contract[]> {
         const contracts = await getContractCollection(this._dbConnection)
         return contracts.find().exec();
     }
 
-    async getContractById(id: string): Promise<ContractType & RxDocument | null> {
+    async getContractById(id: string): Promise<Contract | null> {
         const contracts = await getContractCollection(this._dbConnection)
         return contracts.findOne({
             selector: {
@@ -27,7 +29,7 @@ export class ContractsManager {
         }).exec();
     }
 
-    async getContractByAddress(address: string): Promise<ContractType | null> {
+    async getContractByAddress(address: string): Promise<Contract | null> {
         const contracts = await getContractCollection(this._dbConnection)
         return contracts.findOne({
             selector: {
@@ -77,6 +79,11 @@ export class ContractsManager {
             throw new Error(`Contract with id ${id} does not exist`);
         }
         return contract.remove()
+    }
+
+    async deleteAllContracts() {
+        const contracts = await this.getAllContracts()
+        return contracts.forEach(contract => contract.remove())
     }
 
 }
