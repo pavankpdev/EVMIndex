@@ -9,7 +9,7 @@ export class LiveIndexer extends Provider {
         super(rpc);
     }
 
-    protected async watchEvent(
+    public async watchEvent(
         address: `0x${string}`,
         event: string,
         logsHandler: (logs: Log[]) => void
