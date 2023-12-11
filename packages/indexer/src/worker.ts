@@ -1,15 +1,14 @@
-import { parentPort, workerData } from  "worker_threads";
+import { parentPort, workerData } from 'worker_threads'
 
 const run = async () => {
-    console.log("Running Worker in background", Date.now())
-    console.log(workerData)
-    return "EVMIndex running in background lol"
+  console.log('Running Worker in background', Date.now())
+  console.log(workerData)
+  return 'EVMIndex running in background lol'
 }
 
 export const workersManager = () => {
-    run();
-    return "EVMIndex running in background"
-};
+  run()
+  return 'EVMIndex running in background'
+}
 
-if(parentPort)
-    parentPort.postMessage(workersManager());
+if (parentPort) parentPort.postMessage(workersManager())
