@@ -1,16 +1,3 @@
-import { Contract as EthersContract } from 'ethers'
-
-export type HandlerFn = (ctx: unknown) => Promise<void>
-
-export type EventHandler = {
-  event: string
-  handler: string | HandlerFn
-  webhook?: string
-  file: string
-  confirmations?: number
-  eventArgs: string[]
-}
-
 export type ContractOptions = {
   name: string
   address: string
@@ -27,8 +14,9 @@ export type Config = {
   config: ContractOptions[]
 }
 
-export type Listener = {
-  contract: EthersContract
-  address: string
-  events: Omit<EventHandler, 'file'>[]
+export type PastLogsParams = {
+  address: `0x${string}`
+  event: string
+  fromBlock: number
+  toBlock: number
 }
