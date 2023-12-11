@@ -2,6 +2,7 @@ import 'fake-indexeddb/auto'
 import { decodeEventLog, DecodeEventLogReturnType, Log } from 'viem'
 import { LiveIndexer } from '@/lib/indexer/live'
 import { PastIndexer } from '@/lib/indexer/past'
+import {PastLogsParams} from "@/types";
 export class EVMIndex {
   private rpc: string
   constructor(rpc: string) {
@@ -24,18 +25,16 @@ export class EVMIndex {
     }
   }
 
-  public async syncPastLogs(
-    address: `0x${string}`,
-    event: string
-  ): Promise<Log[] | undefined> {
+  public async syncPastLogs(params: PastLogsParams): Promise<Log[] | undefined> {
+    const {event, toBlock, fromBlock, address} = params
     try {
       const pastIndexer = new PastIndexer(this.rpc)
       console.log(`[Past Sync] Indexing ${address} for ${event} events`)
       return pastIndexer.getPastLogs({
         address,
         event,
-        fromBlock: 32228054,
-        toBlock: 43432175,
+        fromBlock,
+        toBlock,
       })
     } catch (e: unknown) {
       console.log(`[Past Sync] Failed to index ${address} for ${event} events`)
