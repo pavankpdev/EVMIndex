@@ -22,4 +22,10 @@ export class LiveIndexer extends Provider {
         });
     }
 
+    public clearAllWatchers() {
+        Object.values(this.eventWatchers).forEach((unWatcher) => {
+            unWatcher();
+        });
+    }
+
 }

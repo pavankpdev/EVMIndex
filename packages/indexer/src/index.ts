@@ -46,6 +46,13 @@ export class EVMIndex {
         }
     }
 
+    public clearAll() {
+        const liveIndexer = new LiveIndexer(this.rpc);
+        console.log(`[Live Sync] Clearing all watchers`);
+        liveIndexer.clearAllWatchers();
+        return;
+    }
+
     static decodeEventLogs(
         abi: any,
         logs: Log[]
@@ -61,5 +68,6 @@ export class EVMIndex {
             }
         })
     }
+
 
 }
