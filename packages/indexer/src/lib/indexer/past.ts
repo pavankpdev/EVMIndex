@@ -1,6 +1,6 @@
 import { Provider } from '@/lib/provider'
 import { Log, parseAbiItem } from 'viem'
-import {PastLogsParams} from "@/types";
+import { PastLogsParams } from '@/types'
 
 export class PastIndexer extends Provider {
   constructor(rpc: string) {
