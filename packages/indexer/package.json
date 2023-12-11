@@ -99,6 +99,7 @@
     "typechain": "^8.1.1",
     "typescript-json-schema": "^0.56.0",
     "uuid": "^9.0.0",
+    "viem": "^1.19.11",
     "zod": "^3.22.2"
   },
   "repository": {
