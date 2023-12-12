@@ -1,8 +1,8 @@
 import 'fake-indexeddb/auto'
 import { decodeEventLog, DecodeEventLogReturnType, Log } from 'viem'
-import { LiveIndexer } from '@/lib/indexer/live'
-import { PastIndexer } from '@/lib/indexer/past'
-import { PastLogsParams } from '@/types'
+import { LiveIndexer } from "./lib/indexer/live"
+import { PastIndexer } from './lib/indexer/past'
+import { PastLogsParams } from './types'
 export class EVMIndex {
   private rpc: string
   constructor(rpc: string) {
@@ -60,8 +60,8 @@ export class EVMIndex {
         ...log,
         ...decodeEventLog({
           abi,
-          data: log.data,
-          topics: log.topics,
+          data: log?.data,
+          topics: (log as any)?.topics || "",
         }),
       }
     })
