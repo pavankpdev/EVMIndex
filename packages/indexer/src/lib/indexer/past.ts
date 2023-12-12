@@ -3,7 +3,6 @@ import { Log, parseAbiItem } from 'viem'
 import { PastLogsParams } from '../../types'
 import {PAST_SYNC_BLOCK_LIMIT} from "../../utils/constants";
 import {sleep} from "../../utils/sleep";
-import {GetLogsReturnType} from "viem/actions/public/getLogs";
 
 export class PastIndexer extends Provider {
   constructor(rpc: string) {
@@ -37,7 +36,7 @@ export class PastIndexer extends Provider {
         event: parseAbiItem(event) as any,
         fromBlock: BigInt(from),
         toBlock: BigInt(to),
-      }) as GetLogsReturnType & {timestamp: number}[]
+      }) as any
 
       const logsChunkWithTimestamp: Log[] = []
 
