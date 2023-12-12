@@ -1,8 +1,9 @@
 import { Provider } from '../../lib/provider'
 import { Log, parseAbiItem } from 'viem'
 import { PastLogsParams } from '../../types'
-import {PAST_SYNC_BLOCK_LIMIT} from "@/utils/constants";
-import {sleep} from "@/utils/sleep";
+import {PAST_SYNC_BLOCK_LIMIT} from "../../utils/constants";
+import {sleep} from "../../utils/sleep";
+import {GetLogsReturnType} from "viem/actions/public/getLogs";
 
 export class PastIndexer extends Provider {
   constructor(rpc: string) {
@@ -24,22 +25,32 @@ export class PastIndexer extends Provider {
 
     const totalBlocksToScan = toBlock - fromBlock
     const requests = Math.ceil(totalBlocksToScan / PAST_SYNC_BLOCK_LIMIT)
-    console.log({requests})
 
     const logs: Log[] = []
 
     for (let i = 0; i < requests; i++) {
       const from = fromBlock + i * PAST_SYNC_BLOCK_LIMIT
       const to = Math.min(fromBlock + (i + 1) * PAST_SYNC_BLOCK_LIMIT, toBlock)
-      console.log(from, to)
 
       const logsChunk = await this.getClient().getLogs({
         address,
         event: parseAbiItem(event) as any,
         fromBlock: BigInt(from),
         toBlock: BigInt(to),
-      })
-      logs.push(...logsChunk)
+      }) as GetLogsReturnType & {timestamp: number}[]
+
+      const logsChunkWithTimestamp: Log[] = []
+
+      for(const log of logsChunk) {
+        const block = await this.getClient().getBlock({
+          blockNumber: BigInt(log.blockNumber),
+        })
+
+        log.timestamp = Number(block.timestamp)
+        logsChunkWithTimestamp.push(log)
+      }
+
+      logs.push(...logsChunkWithTimestamp)
       console.log(`=====================`)
       console.log(`[Past Sync] Synced ${logs.length} logs`)
       console.log(`[Past Sync] ${requests - i} requests left`)
