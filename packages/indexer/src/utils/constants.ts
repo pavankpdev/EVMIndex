@@ -1,0 +1,1 @@
+export const PAST_SYNC_BLOCK_LIMIT = 1500;
