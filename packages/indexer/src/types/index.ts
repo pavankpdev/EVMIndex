@@ -1,3 +1,5 @@
+import { Log } from 'viem'
+
 export type ContractOptions = {
   name: string
   address: string
@@ -19,4 +21,5 @@ export type PastLogsParams = {
   event: string
   fromBlock: number
   toBlock: number
+  cb?: (logs: Log[]) => void
 }
