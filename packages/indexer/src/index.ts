@@ -1,6 +1,6 @@
 import 'fake-indexeddb/auto'
 import { decodeEventLog, DecodeEventLogReturnType, Log } from 'viem'
-import { LiveIndexer } from "./lib/indexer/live"
+import { LiveIndexer } from './lib/indexer/live'
 import { PastIndexer } from './lib/indexer/past'
 import { PastLogsParams } from './types'
 export class EVMIndex {
