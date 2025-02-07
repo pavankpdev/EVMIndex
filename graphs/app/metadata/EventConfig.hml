@@ -1,4 +1,101 @@
 ---
+kind: ObjectType
+version: v1
+definition:
+  name: EventConfig
+  fields:
+    - name: chainId
+      type: Int4
+    - name: contract
+      type: Varchar
+    - name: createdAt
+      type: Timestamp
+    - name: id
+      type: Uuid!
+    - name: startBlock
+      type: Int4
+    - name: structure
+      type: Varchar
+    - name: updatedAt
+      type: Timestamp
+  graphql:
+    typeName: EventConfig
+    inputTypeName: EventConfigInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: my_pg
+      dataConnectorObjectType: event_config
+      fieldMapping:
+        chainId:
+          column:
+            name: chain_id
+        contract:
+          column:
+            name: contract
+        createdAt:
+          column:
+            name: created_at
+        id:
+          column:
+            name: id
+        startBlock:
+          column:
+            name: start_block
+        structure:
+          column:
+            name: structure
+        updatedAt:
+          column:
+            name: updated_at
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventConfig
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - chainId
+          - contract
+          - createdAt
+          - id
+          - startBlock
+          - structure
+          - updatedAt
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventConfigBoolExp
+  operand:
+    object:
+      type: EventConfig
+      comparableFields:
+        - fieldName: chainId
+          booleanExpressionType: Int4BoolExp
+        - fieldName: contract
+          booleanExpressionType: VarcharBoolExp
+        - fieldName: createdAt
+          booleanExpressionType: TimestampBoolExp
+        - fieldName: id
+          booleanExpressionType: UuidBoolExp
+        - fieldName: startBlock
+          booleanExpressionType: Int4BoolExp
+        - fieldName: structure
+          booleanExpressionType: VarcharBoolExp
+        - fieldName: updatedAt
+          booleanExpressionType: TimestampBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventConfigBoolExp
+
+---
 kind: AggregateExpression
 version: v1
 definition:
@@ -18,7 +115,7 @@ definition:
         - fieldName: startBlock
           aggregateExpression: Int4AggExp
         - fieldName: structure
-          aggregateExpression: JsonAggExp
+          aggregateExpression: VarcharAggExp
         - fieldName: updatedAt
           aggregateExpression: TimestampAggExp
   count:
@@ -46,7 +143,7 @@ definition:
         - fieldName: startBlock
           orderByExpression: Int4OrderByExp
         - fieldName: structure
-          orderByExpression: JsonOrderByExp
+          orderByExpression: VarcharOrderByExp
         - fieldName: updatedAt
           orderByExpression: TimestampOrderByExp
       orderableRelationships: []

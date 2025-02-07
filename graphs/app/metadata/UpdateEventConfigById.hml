@@ -166,7 +166,7 @@ definition:
   description: Update the 'structure' column in the 'event_config' collection
   fields:
     - name: set
-      type: Json
+      type: Varchar
       description: Set the column to this value
   graphql:
     typeName: UpdateColumnEventConfigStructure

@@ -1,4 +1,85 @@
 ---
+kind: ObjectType
+version: v1
+definition:
+  name: Networks
+  fields:
+    - name: chainId
+      type: Int4
+    - name: createdAt
+      type: Timestamp
+    - name: id
+      type: Uuid!
+    - name: name
+      type: Varchar
+    - name: rpc
+      type: Varchar
+  graphql:
+    typeName: Networks
+    inputTypeName: NetworksInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: my_pg
+      dataConnectorObjectType: networks
+      fieldMapping:
+        chainId:
+          column:
+            name: chain_id
+        createdAt:
+          column:
+            name: created_at
+        id:
+          column:
+            name: id
+        name:
+          column:
+            name: name
+        rpc:
+          column:
+            name: rpc
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: Networks
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - chainId
+          - createdAt
+          - id
+          - name
+          - rpc
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: NetworksBoolExp
+  operand:
+    object:
+      type: Networks
+      comparableFields:
+        - fieldName: chainId
+          booleanExpressionType: Int4BoolExp
+        - fieldName: createdAt
+          booleanExpressionType: TimestampBoolExp
+        - fieldName: id
+          booleanExpressionType: UuidBoolExp
+        - fieldName: name
+          booleanExpressionType: VarcharBoolExp
+        - fieldName: rpc
+          booleanExpressionType: VarcharBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: NetworksBoolExp
+
+---
 kind: AggregateExpression
 version: v1
 definition:

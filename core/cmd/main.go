@@ -11,10 +11,17 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/ethclient"
-	"golang.org/x/crypto/sha3"
+	"github.com/pavankpdev/EVMIndex/core/db"
+	sqlc "github.com/pavankpdev/EVMIndex/core/db/sqlc"
+
+	_ "github.com/lib/pq"
 )
 
 func main() {
+
+	conn := db.GetDbConnection()
+	store := sqlc.New(conn);
+
 	rpcURL := "wss://polygon-amoy.g.alchemy.com/v2/e5X5TCL-0GBdm_iP9LnsNskTgeAHPHrS"
 
 	client, err := ethclient.Dial(rpcURL)
@@ -23,19 +30,37 @@ func main() {
 	}
 	defer client.Close()
 
-	contractAddress := common.HexToAddress("0x31Ef6675B147bFCa2ab7dF6462547110c98F0B00")
-	startBlock := uint64(5810517)
+	events, err := store.GetAllEventConfigs(context.Background());
+	if err != nil {
+		log.Fatalf("Failed to connect to Ethereum WebSocket: %v", err)
+		return;
+	}
 
-	eventSignature := "Transfer(address,address,uint256)"
-	hash := sha3.NewLegacyKeccak256()
-	hash.Write([]byte(eventSignature))
-	eventTopic_ := hash.Sum(nil)
+	for _, e := range events {
 
-	eventTopic := common.BytesToHash(eventTopic_)
+		fmt.Println("Event Config:")
+		fmt.Printf("ID: %s\n", e.ID)
+		fmt.Printf("Start Block: %s\n", e.StartBlock)
+		fmt.Printf("Contract: %s\n", e.Contract.String)
+		fmt.Printf("Chain ID: %d\n", e.ChainID)
+		fmt.Printf("Structure: %v\n", e.Structure.String)
+		fmt.Printf("Created At: %s\n", e.CreatedAt)
+		fmt.Printf("Updated At: %s\n", e.UpdatedAt)
+		fmt.Println("----------------------")
+	}
+	// contractAddress := common.HexToAddress("0x31Ef6675B147bFCa2ab7dF6462547110c98F0B00")
+	// startBlock := uint64(5810517)
 
-	fetchHistoricalEvents(client, contractAddress, eventTopic, startBlock)
+	// eventSignature := "Transfer(address,address,uint256)"
+	// hash := sha3.NewLegacyKeccak256()
+	// hash.Write([]byte(eventSignature))
+	// eventTopic_ := hash.Sum(nil)
 
-	listenForLiveEvents(client, contractAddress, eventTopic)
+	// eventTopic := common.BytesToHash(eventTopic_)
+
+	// fetchHistoricalEvents(client, contractAddress, eventTopic, startBlock)
+
+	// listenForLiveEvents(client, contractAddress, eventTopic)
 }
 
 func fetchHistoricalEvents(client *ethclient.Client, contract common.Address, topic common.Hash, startBlock uint64) {

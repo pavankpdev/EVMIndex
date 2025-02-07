@@ -2,58 +2,6 @@
 kind: ScalarType
 version: v1
 definition:
-  name: Uuid
-  graphql:
-    typeName: Uuid
-
----
-kind: BooleanExpressionType
-version: v1
-definition:
-  name: UuidBoolExp
-  operand:
-    scalar:
-      type: Uuid
-      comparisonOperators:
-        - name: _eq
-          argumentType: Uuid!
-        - name: _gt
-          argumentType: Uuid!
-        - name: _gte
-          argumentType: Uuid!
-        - name: _in
-          argumentType: "[Uuid!]!"
-        - name: _lt
-          argumentType: Uuid!
-        - name: _lte
-          argumentType: Uuid!
-        - name: _neq
-          argumentType: Uuid!
-      dataConnectorOperatorMapping:
-        - dataConnectorName: my_pg
-          dataConnectorScalarType: uuid
-          operatorMapping: {}
-  logicalOperators:
-    enable: true
-  isNull:
-    enable: true
-  graphql:
-    typeName: UuidBoolExp
-
----
-kind: DataConnectorScalarRepresentation
-version: v1
-definition:
-  dataConnectorName: my_pg
-  dataConnectorScalarType: uuid
-  representation: Uuid
-  graphql:
-    comparisonExpressionTypeName: UuidComparisonExp
-
----
-kind: ScalarType
-version: v1
-definition:
   name: Int4
   graphql:
     typeName: Int4
@@ -230,41 +178,53 @@ definition:
 kind: ScalarType
 version: v1
 definition:
-  name: Json
+  name: Uuid
   graphql:
-    typeName: Json
+    typeName: Uuid
 
 ---
 kind: BooleanExpressionType
 version: v1
 definition:
-  name: JsonBoolExp
+  name: UuidBoolExp
   operand:
     scalar:
-      type: Json
+      type: Uuid
       comparisonOperators:
+        - name: _eq
+          argumentType: Uuid!
+        - name: _gt
+          argumentType: Uuid!
+        - name: _gte
+          argumentType: Uuid!
         - name: _in
-          argumentType: "[Json!]!"
+          argumentType: "[Uuid!]!"
+        - name: _lt
+          argumentType: Uuid!
+        - name: _lte
+          argumentType: Uuid!
+        - name: _neq
+          argumentType: Uuid!
       dataConnectorOperatorMapping:
         - dataConnectorName: my_pg
-          dataConnectorScalarType: json
+          dataConnectorScalarType: uuid
           operatorMapping: {}
   logicalOperators:
     enable: true
   isNull:
     enable: true
   graphql:
-    typeName: JsonBoolExp
+    typeName: UuidBoolExp
 
 ---
 kind: DataConnectorScalarRepresentation
 version: v1
 definition:
   dataConnectorName: my_pg
-  dataConnectorScalarType: json
-  representation: Json
+  dataConnectorScalarType: uuid
+  representation: Uuid
   graphql:
-    comparisonExpressionTypeName: JsonComparisonExp
+    comparisonExpressionTypeName: UuidComparisonExp
 
 ---
 kind: ScalarType
@@ -587,26 +547,6 @@ definition:
     selectTypeName: UuidAggExp
 
 ---
-kind: AggregateExpression
-version: v1
-definition:
-  name: JsonAggExp
-  operand:
-    scalar:
-      aggregatedType: Json
-      aggregationFunctions: []
-      dataConnectorAggregationFunctionMapping:
-        - dataConnectorName: my_pg
-          dataConnectorScalarType: json
-          functionMapping: {}
-  count:
-    enable: true
-  countDistinct:
-    enable: true
-  graphql:
-    selectTypeName: JsonAggExp
-
----
 kind: OrderByExpression
 version: v1
 definition:
@@ -657,17 +597,4 @@ definition:
         enableAll: true
   graphql:
     expressionTypeName: UuidOrderByExp
-
----
-kind: OrderByExpression
-version: v1
-definition:
-  name: JsonOrderByExp
-  operand:
-    scalar:
-      orderedType: Json
-      enableOrderByDirections:
-        enableAll: true
-  graphql:
-    expressionTypeName: JsonOrderByExp
 

@@ -227,11 +227,6 @@ definition:
               argument_type:
                 type: named
                 name: int8
-        json:
-          aggregate_functions: {}
-          comparison_operators:
-            _in:
-              type: in
         numeric:
           representation:
             type: bigdecimal
@@ -664,7 +659,7 @@ definition:
                 type: nullable
                 underlying_type:
                   type: named
-                  name: json
+                  name: varchar
             updated_at:
               type:
                 type: nullable
@@ -708,7 +703,7 @@ definition:
                 type: nullable
                 underlying_type:
                   type: named
-                  name: json
+                  name: varchar
             updated_at:
               type:
                 type: nullable
@@ -864,7 +859,7 @@ definition:
                 type: nullable
                 underlying_type:
                   type: named
-                  name: json
+                  name: varchar
         update_column_event_config_updated_at:
           description: Update the 'updated_at' column in the 'event_config' collection
           fields:

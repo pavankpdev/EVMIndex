@@ -4,19 +4,18 @@ package db
 
 import (
 	"database/sql"
-	"encoding/json"
 
 	"github.com/google/uuid"
 )
 
 type EventConfig struct {
-	ID         uuid.UUID       `json:"id"`
-	StartBlock sql.NullInt32   `json:"start_block"`
-	Contract   sql.NullString  `json:"contract"`
-	ChainID    sql.NullInt32   `json:"chain_id"`
-	Structure  json.RawMessage `json:"structure"`
-	CreatedAt  sql.NullTime    `json:"created_at"`
-	UpdatedAt  sql.NullTime    `json:"updated_at"`
+	ID         uuid.UUID      `json:"id"`
+	StartBlock sql.NullInt32  `json:"start_block"`
+	Contract   sql.NullString `json:"contract"`
+	ChainID    sql.NullInt32  `json:"chain_id"`
+	Structure  sql.NullString `json:"structure"`
+	CreatedAt  sql.NullTime   `json:"created_at"`
+	UpdatedAt  sql.NullTime   `json:"updated_at"`
 }
 
 type Network struct {

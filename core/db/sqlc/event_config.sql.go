@@ -6,7 +6,6 @@ package db
 import (
 	"context"
 	"database/sql"
-	"encoding/json"
 
 	"github.com/google/uuid"
 )
@@ -18,10 +17,10 @@ RETURNING id, start_block, contract, chain_id, structure, created_at, updated_at
 `
 
 type CreateEventConfigParams struct {
-	StartBlock sql.NullInt32   `json:"start_block"`
-	Contract   sql.NullString  `json:"contract"`
-	ChainID    sql.NullInt32   `json:"chain_id"`
-	Structure  json.RawMessage `json:"structure"`
+	StartBlock sql.NullInt32  `json:"start_block"`
+	Contract   sql.NullString `json:"contract"`
+	ChainID    sql.NullInt32  `json:"chain_id"`
+	Structure  sql.NullString `json:"structure"`
 }
 
 func (q *Queries) CreateEventConfig(ctx context.Context, arg CreateEventConfigParams) (EventConfig, error) {
@@ -150,11 +149,11 @@ RETURNING id, start_block, contract, chain_id, structure, created_at, updated_at
 `
 
 type UpdateEventConfigParams struct {
-	ID         uuid.UUID       `json:"id"`
-	StartBlock sql.NullInt32   `json:"start_block"`
-	Contract   sql.NullString  `json:"contract"`
-	ChainID    sql.NullInt32   `json:"chain_id"`
-	Structure  json.RawMessage `json:"structure"`
+	ID         uuid.UUID      `json:"id"`
+	StartBlock sql.NullInt32  `json:"start_block"`
+	Contract   sql.NullString `json:"contract"`
+	ChainID    sql.NullInt32  `json:"chain_id"`
+	Structure  sql.NullString `json:"structure"`
 }
 
 func (q *Queries) UpdateEventConfig(ctx context.Context, arg UpdateEventConfigParams) (EventConfig, error) {
