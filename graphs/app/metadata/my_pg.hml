@@ -1,0 +1,1210 @@
+kind: DataConnectorLink
+version: v1
+definition:
+  name: my_pg
+  url:
+    readWriteUrls:
+      read:
+        valueFromEnv: APP_MY_PG_READ_URL
+      write:
+        valueFromEnv: APP_MY_PG_WRITE_URL
+  headers:
+    Authorization:
+      valueFromEnv: APP_MY_PG_AUTHORIZATION_HEADER
+  schema:
+    version: v0.1
+    schema:
+      scalar_types:
+        int4:
+          representation:
+            type: int32
+          aggregate_functions:
+            avg:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            bit_and:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            bit_or:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            max:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            min:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            stddev:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            stddev_pop:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            stddev_samp:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            sum:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int8
+            var_pop:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            var_samp:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            variance:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+          comparison_operators:
+            _eq:
+              type: equal
+            _gt:
+              type: custom
+              argument_type:
+                type: named
+                name: int4
+            _gte:
+              type: custom
+              argument_type:
+                type: named
+                name: int4
+            _in:
+              type: in
+            _lt:
+              type: custom
+              argument_type:
+                type: named
+                name: int4
+            _lte:
+              type: custom
+              argument_type:
+                type: named
+                name: int4
+            _neq:
+              type: custom
+              argument_type:
+                type: named
+                name: int4
+        int8:
+          representation:
+            type: int64
+          aggregate_functions:
+            avg:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            bit_and:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int8
+            bit_or:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int8
+            max:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int8
+            min:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int8
+            stddev:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            stddev_pop:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            stddev_samp:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            sum:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            var_pop:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            var_samp:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            variance:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+          comparison_operators:
+            _eq:
+              type: equal
+            _gt:
+              type: custom
+              argument_type:
+                type: named
+                name: int8
+            _gte:
+              type: custom
+              argument_type:
+                type: named
+                name: int8
+            _in:
+              type: in
+            _lt:
+              type: custom
+              argument_type:
+                type: named
+                name: int8
+            _lte:
+              type: custom
+              argument_type:
+                type: named
+                name: int8
+            _neq:
+              type: custom
+              argument_type:
+                type: named
+                name: int8
+        json:
+          aggregate_functions: {}
+          comparison_operators:
+            _in:
+              type: in
+        numeric:
+          representation:
+            type: bigdecimal
+          aggregate_functions:
+            avg:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            max:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            min:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            stddev:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            stddev_pop:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            stddev_samp:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            sum:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            var_pop:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            var_samp:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+            variance:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: numeric
+          comparison_operators:
+            _eq:
+              type: equal
+            _gt:
+              type: custom
+              argument_type:
+                type: named
+                name: numeric
+            _gte:
+              type: custom
+              argument_type:
+                type: named
+                name: numeric
+            _in:
+              type: in
+            _lt:
+              type: custom
+              argument_type:
+                type: named
+                name: numeric
+            _lte:
+              type: custom
+              argument_type:
+                type: named
+                name: numeric
+            _neq:
+              type: custom
+              argument_type:
+                type: named
+                name: numeric
+        text:
+          representation:
+            type: string
+          aggregate_functions:
+            max:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            min:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+          comparison_operators:
+            _eq:
+              type: equal
+            _gt:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _gte:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _ilike:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _in:
+              type: in
+            _iregex:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _like:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _lt:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _lte:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _neq:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _nilike:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _niregex:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _nlike:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _nregex:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            _regex:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            starts_with:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+            ts_match_tt:
+              type: custom
+              argument_type:
+                type: named
+                name: text
+        timestamp:
+          representation:
+            type: timestamp
+          aggregate_functions:
+            max:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: timestamp
+            min:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: timestamp
+          comparison_operators:
+            _eq:
+              type: equal
+            _gt:
+              type: custom
+              argument_type:
+                type: named
+                name: timestamp
+            _gte:
+              type: custom
+              argument_type:
+                type: named
+                name: timestamp
+            _in:
+              type: in
+            _lt:
+              type: custom
+              argument_type:
+                type: named
+                name: timestamp
+            _lte:
+              type: custom
+              argument_type:
+                type: named
+                name: timestamp
+            _neq:
+              type: custom
+              argument_type:
+                type: named
+                name: timestamp
+        uuid:
+          representation:
+            type: uuid
+          aggregate_functions: {}
+          comparison_operators:
+            _eq:
+              type: equal
+            _gt:
+              type: custom
+              argument_type:
+                type: named
+                name: uuid
+            _gte:
+              type: custom
+              argument_type:
+                type: named
+                name: uuid
+            _in:
+              type: in
+            _lt:
+              type: custom
+              argument_type:
+                type: named
+                name: uuid
+            _lte:
+              type: custom
+              argument_type:
+                type: named
+                name: uuid
+            _neq:
+              type: custom
+              argument_type:
+                type: named
+                name: uuid
+        varchar:
+          representation:
+            type: string
+          aggregate_functions:
+            max:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+            min:
+              result_type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: text
+          comparison_operators:
+            _eq:
+              type: equal
+            _gt:
+              type: custom
+              argument_type:
+                type: named
+                name: varchar
+            _gte:
+              type: custom
+              argument_type:
+                type: named
+                name: varchar
+            _ilike:
+              type: custom
+              argument_type:
+                type: named
+                name: varchar
+            _in:
+              type: in
+            _iregex:
+              type: custom
+              argument_type:
+                type: named
+                name: varchar
+            _like:
+              type: custom
+              argument_type:
+                type: named
+                name: varchar
+            _lt:
+              type: custom
+              argument_type:
+                type: named
+                name: varchar
+            _lte:
+              type: custom
+              argument_type:
+                type: named
+                name: varchar
+            _neq:
+              type: custom
+              argument_type:
+                type: named
+                name: varchar
+            _nilike:
+              type: custom
+              argument_type:
+                type: named
+                name: varchar
+            _niregex:
+              type: custom
+              argument_type:
+                type: named
+                name: varchar
+            _nlike:
+              type: custom
+              argument_type:
+                type: named
+                name: varchar
+            _nregex:
+              type: custom
+              argument_type:
+                type: named
+                name: varchar
+            _regex:
+              type: custom
+              argument_type:
+                type: named
+                name: varchar
+            starts_with:
+              type: custom
+              argument_type:
+                type: named
+                name: varchar
+            ts_match_tt:
+              type: custom
+              argument_type:
+                type: named
+                name: varchar
+      object_types:
+        delete_event_config_by_id_response:
+          description: Responses from the 'delete_event_config_by_id' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: event_config
+        delete_networks_by_id_response:
+          description: Responses from the 'delete_networks_by_id' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: networks
+        event_config:
+          fields:
+            chain_id:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            contract:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: varchar
+            created_at:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: timestamp
+            id:
+              type:
+                type: named
+                name: uuid
+            start_block:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            structure:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: json
+            updated_at:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: timestamp
+        insert_event_config_object:
+          fields:
+            chain_id:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            contract:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: varchar
+            created_at:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: timestamp
+            id:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: uuid
+            start_block:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            structure:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: json
+            updated_at:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: timestamp
+        insert_event_config_response:
+          description: Responses from the 'insert_event_config' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: event_config
+        insert_networks_object:
+          fields:
+            chain_id:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            created_at:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: timestamp
+            id:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: uuid
+            name:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: varchar
+            rpc:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: varchar
+        insert_networks_response:
+          description: Responses from the 'insert_networks' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: networks
+        networks:
+          fields:
+            chain_id:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+            created_at:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: timestamp
+            id:
+              type:
+                type: named
+                name: uuid
+            name:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: varchar
+            rpc:
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: varchar
+        update_column_event_config_chain_id:
+          description: Update the 'chain_id' column in the 'event_config' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+        update_column_event_config_contract:
+          description: Update the 'contract' column in the 'event_config' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: varchar
+        update_column_event_config_created_at:
+          description: Update the 'created_at' column in the 'event_config' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: timestamp
+        update_column_event_config_id:
+          description: Update the 'id' column in the 'event_config' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: uuid
+        update_column_event_config_start_block:
+          description: Update the 'start_block' column in the 'event_config' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+        update_column_event_config_structure:
+          description: Update the 'structure' column in the 'event_config' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: json
+        update_column_event_config_updated_at:
+          description: Update the 'updated_at' column in the 'event_config' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: timestamp
+        update_column_networks_chain_id:
+          description: Update the 'chain_id' column in the 'networks' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: int4
+        update_column_networks_created_at:
+          description: Update the 'created_at' column in the 'networks' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: timestamp
+        update_column_networks_id:
+          description: Update the 'id' column in the 'networks' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: named
+                name: uuid
+        update_column_networks_name:
+          description: Update the 'name' column in the 'networks' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: varchar
+        update_column_networks_rpc:
+          description: Update the 'rpc' column in the 'networks' collection
+          fields:
+            _set:
+              description: Set the column to this value
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: varchar
+        update_event_config_by_id_response:
+          description: Responses from the 'update_event_config_by_id' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: event_config
+        update_event_config_by_id_update_columns:
+          description: Update the columns of the 'event_config' collection
+          fields:
+            chain_id:
+              description: Update the 'chain_id' column in the 'event_config' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_event_config_chain_id
+            contract:
+              description: Update the 'contract' column in the 'event_config' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_event_config_contract
+            created_at:
+              description: Update the 'created_at' column in the 'event_config' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_event_config_created_at
+            id:
+              description: Update the 'id' column in the 'event_config' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_event_config_id
+            start_block:
+              description: Update the 'start_block' column in the 'event_config' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_event_config_start_block
+            structure:
+              description: Update the 'structure' column in the 'event_config' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_event_config_structure
+            updated_at:
+              description: Update the 'updated_at' column in the 'event_config' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_event_config_updated_at
+        update_networks_by_id_response:
+          description: Responses from the 'update_networks_by_id' procedure
+          fields:
+            affected_rows:
+              description: The number of rows affected by the mutation
+              type:
+                type: named
+                name: int4
+            returning:
+              description: Data from rows affected by the mutation
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: networks
+        update_networks_by_id_update_columns:
+          description: Update the columns of the 'networks' collection
+          fields:
+            chain_id:
+              description: Update the 'chain_id' column in the 'networks' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_networks_chain_id
+            created_at:
+              description: Update the 'created_at' column in the 'networks' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_networks_created_at
+            id:
+              description: Update the 'id' column in the 'networks' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_networks_id
+            name:
+              description: Update the 'name' column in the 'networks' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_networks_name
+            rpc:
+              description: Update the 'rpc' column in the 'networks' collection.
+              type:
+                type: nullable
+                underlying_type:
+                  type: named
+                  name: update_column_networks_rpc
+      collections:
+        - name: event_config
+          arguments: {}
+          type: event_config
+          uniqueness_constraints:
+            event_config_pkey:
+              unique_columns:
+                - id
+          foreign_keys: {}
+        - name: networks
+          arguments: {}
+          type: networks
+          uniqueness_constraints:
+            networks_pkey:
+              unique_columns:
+                - id
+          foreign_keys: {}
+      functions: []
+      procedures:
+        - name: delete_event_config_by_id
+          description: Delete any row on the 'event_config' collection using the 'id' key
+          arguments:
+            key_id:
+              type:
+                type: named
+                name: uuid
+            pre_check:
+              description: Delete permission predicate over the 'event_config' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: event_config
+          result_type:
+            type: named
+            name: delete_event_config_by_id_response
+        - name: delete_networks_by_id
+          description: Delete any row on the 'networks' collection using the 'id' key
+          arguments:
+            key_id:
+              type:
+                type: named
+                name: uuid
+            pre_check:
+              description: Delete permission predicate over the 'networks' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: networks
+          result_type:
+            type: named
+            name: delete_networks_by_id_response
+        - name: insert_event_config
+          description: Insert into the event_config table
+          arguments:
+            objects:
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: insert_event_config_object
+            post_check:
+              description: Insert permission predicate over the 'event_config' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: event_config
+          result_type:
+            type: named
+            name: insert_event_config_response
+        - name: insert_networks
+          description: Insert into the networks table
+          arguments:
+            objects:
+              type:
+                type: array
+                element_type:
+                  type: named
+                  name: insert_networks_object
+            post_check:
+              description: Insert permission predicate over the 'networks' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: networks
+          result_type:
+            type: named
+            name: insert_networks_response
+        - name: update_event_config_by_id
+          description: Update any row on the 'event_config' collection using the 'id' key
+          arguments:
+            key_id:
+              type:
+                type: named
+                name: uuid
+            post_check:
+              description: Update permission post-condition predicate over the 'event_config' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: event_config
+            pre_check:
+              description: Update permission pre-condition predicate over the 'event_config' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: event_config
+            update_columns:
+              type:
+                type: named
+                name: update_event_config_by_id_update_columns
+          result_type:
+            type: named
+            name: update_event_config_by_id_response
+        - name: update_networks_by_id
+          description: Update any row on the 'networks' collection using the 'id' key
+          arguments:
+            key_id:
+              type:
+                type: named
+                name: uuid
+            post_check:
+              description: Update permission post-condition predicate over the 'networks' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: networks
+            pre_check:
+              description: Update permission pre-condition predicate over the 'networks' collection
+              type:
+                type: nullable
+                underlying_type:
+                  type: predicate
+                  object_type_name: networks
+            update_columns:
+              type:
+                type: named
+                name: update_networks_by_id_update_columns
+          result_type:
+            type: named
+            name: update_networks_by_id_response
+    capabilities:
+      version: 0.1.6
+      capabilities:
+        query:
+          aggregates: {}
+          variables: {}
+          explain: {}
+          nested_fields:
+            filter_by: {}
+            order_by: {}
+          exists:
+            nested_collections: {}
+        mutation:
+          transactional: {}
+          explain: {}
+        relationships:
+          relation_comparisons: {}
+          order_by_aggregate: {}

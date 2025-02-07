@@ -1,0 +1,138 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventConfigObject
+  fields:
+    - name: chainId
+      type: Int4
+    - name: contract
+      type: Varchar
+    - name: createdAt
+      type: Timestamp
+    - name: id
+      type: Uuid
+    - name: startBlock
+      type: Int4
+    - name: structure
+      type: Json
+    - name: updatedAt
+      type: Timestamp
+  graphql:
+    typeName: InsertEventConfigObject
+    inputTypeName: InsertEventConfigObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: my_pg
+      dataConnectorObjectType: insert_event_config_object
+      fieldMapping:
+        chainId:
+          column:
+            name: chain_id
+        contract:
+          column:
+            name: contract
+        createdAt:
+          column:
+            name: created_at
+        id:
+          column:
+            name: id
+        startBlock:
+          column:
+            name: start_block
+        structure:
+          column:
+            name: structure
+        updatedAt:
+          column:
+            name: updated_at
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventConfigObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - chainId
+          - contract
+          - createdAt
+          - id
+          - startBlock
+          - structure
+          - updatedAt
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertEventConfigResponse
+  description: Responses from the 'insert_event_config' procedure
+  fields:
+    - name: affectedRows
+      type: Int4!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventConfig!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertEventConfigResponse
+    inputTypeName: InsertEventConfigResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: my_pg
+      dataConnectorObjectType: insert_event_config_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertEventConfigResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertEventConfig
+  outputType: InsertEventConfigResponse!
+  arguments:
+    - name: objects
+      type: "[InsertEventConfigObject!]!"
+    - name: postCheck
+      type: EventConfigBoolExp
+      description: Insert permission predicate over the 'event_config' collection
+  source:
+    dataConnectorName: my_pg
+    dataConnectorCommand:
+      procedure: insert_event_config
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertEventConfig
+    rootFieldKind: Mutation
+  description: Insert into the event_config table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertEventConfig
+  permissions:
+    - role: admin
+      allowExecution: true
+

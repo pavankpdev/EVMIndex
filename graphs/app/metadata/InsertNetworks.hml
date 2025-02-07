@@ -1,0 +1,126 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertNetworksObject
+  fields:
+    - name: chainId
+      type: Int4
+    - name: createdAt
+      type: Timestamp
+    - name: id
+      type: Uuid
+    - name: name
+      type: Varchar
+    - name: rpc
+      type: Varchar
+  graphql:
+    typeName: InsertNetworksObject
+    inputTypeName: InsertNetworksObjectInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: my_pg
+      dataConnectorObjectType: insert_networks_object
+      fieldMapping:
+        chainId:
+          column:
+            name: chain_id
+        createdAt:
+          column:
+            name: created_at
+        id:
+          column:
+            name: id
+        name:
+          column:
+            name: name
+        rpc:
+          column:
+            name: rpc
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertNetworksObject
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - chainId
+          - createdAt
+          - id
+          - name
+          - rpc
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: InsertNetworksResponse
+  description: Responses from the 'insert_networks' procedure
+  fields:
+    - name: affectedRows
+      type: Int4!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[Networks!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: InsertNetworksResponse
+    inputTypeName: InsertNetworksResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: my_pg
+      dataConnectorObjectType: insert_networks_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: InsertNetworksResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: InsertNetworks
+  outputType: InsertNetworksResponse!
+  arguments:
+    - name: objects
+      type: "[InsertNetworksObject!]!"
+    - name: postCheck
+      type: NetworksBoolExp
+      description: Insert permission predicate over the 'networks' collection
+  source:
+    dataConnectorName: my_pg
+    dataConnectorCommand:
+      procedure: insert_networks
+    argumentMapping:
+      objects: objects
+      postCheck: post_check
+  graphql:
+    rootFieldName: insertNetworks
+    rootFieldKind: Mutation
+  description: Insert into the networks table
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: InsertNetworks
+  permissions:
+    - role: admin
+      allowExecution: true
+

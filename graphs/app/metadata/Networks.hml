@@ -1,0 +1,87 @@
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: NetworksAggExp
+  operand:
+    object:
+      aggregatedType: Networks
+      aggregatableFields:
+        - fieldName: chainId
+          aggregateExpression: Int4AggExp
+        - fieldName: createdAt
+          aggregateExpression: TimestampAggExp
+        - fieldName: id
+          aggregateExpression: UuidAggExp
+        - fieldName: name
+          aggregateExpression: VarcharAggExp
+        - fieldName: rpc
+          aggregateExpression: VarcharAggExp
+  count:
+    enable: true
+  graphql:
+    selectTypeName: NetworksAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: NetworksOrderByExp
+  operand:
+    object:
+      orderedType: Networks
+      orderableFields:
+        - fieldName: chainId
+          orderByExpression: Int4OrderByExp
+        - fieldName: createdAt
+          orderByExpression: TimestampOrderByExp
+        - fieldName: id
+          orderByExpression: UuidOrderByExp
+        - fieldName: name
+          orderByExpression: VarcharOrderByExp
+        - fieldName: rpc
+          orderByExpression: VarcharOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: NetworksOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: Networks
+  objectType: Networks
+  source:
+    dataConnectorName: my_pg
+    collection: networks
+  filterExpressionType: NetworksBoolExp
+  aggregateExpression: NetworksAggExp
+  orderByExpression: NetworksOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: networks
+      subscription:
+        rootField: networks
+    selectUniques:
+      - queryRootField: networksById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: networksById
+    filterInputTypeName: NetworksFilterInput
+    aggregate:
+      queryRootField: networksAggregate
+      subscription:
+        rootField: networksAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: Networks
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+

@@ -1,0 +1,299 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnNetworksChainId
+  description: Update the 'chain_id' column in the 'networks' collection
+  fields:
+    - name: set
+      type: Int4
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnNetworksChainId
+    inputTypeName: UpdateColumnNetworksChainIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: my_pg
+      dataConnectorObjectType: update_column_networks_chain_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnNetworksChainId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnNetworksCreatedAt
+  description: Update the 'created_at' column in the 'networks' collection
+  fields:
+    - name: set
+      type: Timestamp
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnNetworksCreatedAt
+    inputTypeName: UpdateColumnNetworksCreatedAtInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: my_pg
+      dataConnectorObjectType: update_column_networks_created_at
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnNetworksCreatedAt
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnNetworksId
+  description: Update the 'id' column in the 'networks' collection
+  fields:
+    - name: set
+      type: Uuid!
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnNetworksId
+    inputTypeName: UpdateColumnNetworksIdInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: my_pg
+      dataConnectorObjectType: update_column_networks_id
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnNetworksId
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnNetworksName
+  description: Update the 'name' column in the 'networks' collection
+  fields:
+    - name: set
+      type: Varchar
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnNetworksName
+    inputTypeName: UpdateColumnNetworksNameInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: my_pg
+      dataConnectorObjectType: update_column_networks_name
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnNetworksName
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateColumnNetworksRpc
+  description: Update the 'rpc' column in the 'networks' collection
+  fields:
+    - name: set
+      type: Varchar
+      description: Set the column to this value
+  graphql:
+    typeName: UpdateColumnNetworksRpc
+    inputTypeName: UpdateColumnNetworksRpcInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: my_pg
+      dataConnectorObjectType: update_column_networks_rpc
+      fieldMapping:
+        set:
+          column:
+            name: _set
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateColumnNetworksRpc
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - set
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateNetworksByIdUpdateColumns
+  description: Update the columns of the 'networks' collection
+  fields:
+    - name: chainId
+      type: UpdateColumnNetworksChainId
+      description: Update the 'chain_id' column in the 'networks' collection.
+    - name: createdAt
+      type: UpdateColumnNetworksCreatedAt
+      description: Update the 'created_at' column in the 'networks' collection.
+    - name: id
+      type: UpdateColumnNetworksId
+      description: Update the 'id' column in the 'networks' collection.
+    - name: name
+      type: UpdateColumnNetworksName
+      description: Update the 'name' column in the 'networks' collection.
+    - name: rpc
+      type: UpdateColumnNetworksRpc
+      description: Update the 'rpc' column in the 'networks' collection.
+  graphql:
+    typeName: UpdateNetworksByIdUpdateColumns
+    inputTypeName: UpdateNetworksByIdUpdateColumnsInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: my_pg
+      dataConnectorObjectType: update_networks_by_id_update_columns
+      fieldMapping:
+        chainId:
+          column:
+            name: chain_id
+        createdAt:
+          column:
+            name: created_at
+        id:
+          column:
+            name: id
+        name:
+          column:
+            name: name
+        rpc:
+          column:
+            name: rpc
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateNetworksByIdUpdateColumns
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - chainId
+          - createdAt
+          - id
+          - name
+          - rpc
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: UpdateNetworksByIdResponse
+  description: Responses from the 'update_networks_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int4!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[Networks!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: UpdateNetworksByIdResponse
+    inputTypeName: UpdateNetworksByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: my_pg
+      dataConnectorObjectType: update_networks_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: UpdateNetworksByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: UpdateNetworksById
+  outputType: UpdateNetworksByIdResponse!
+  arguments:
+    - name: keyId
+      type: Uuid!
+    - name: postCheck
+      type: NetworksBoolExp
+      description: Update permission post-condition predicate over the 'networks' collection
+    - name: preCheck
+      type: NetworksBoolExp
+      description: Update permission pre-condition predicate over the 'networks' collection
+    - name: updateColumns
+      type: UpdateNetworksByIdUpdateColumns!
+  source:
+    dataConnectorName: my_pg
+    dataConnectorCommand:
+      procedure: update_networks_by_id
+    argumentMapping:
+      keyId: key_id
+      postCheck: post_check
+      preCheck: pre_check
+      updateColumns: update_columns
+  graphql:
+    rootFieldName: updateNetworksById
+    rootFieldKind: Mutation
+  description: Update any row on the 'networks' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: UpdateNetworksById
+  permissions:
+    - role: admin
+      allowExecution: true
+

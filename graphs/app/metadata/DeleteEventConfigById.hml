@@ -1,0 +1,169 @@
+---
+kind: ObjectType
+version: v1
+definition:
+  name: EventConfig
+  fields:
+    - name: chainId
+      type: Int4
+    - name: contract
+      type: Varchar
+    - name: createdAt
+      type: Timestamp
+    - name: id
+      type: Uuid!
+    - name: startBlock
+      type: Int4
+    - name: structure
+      type: Json
+    - name: updatedAt
+      type: Timestamp
+  graphql:
+    typeName: EventConfig
+    inputTypeName: EventConfigInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: my_pg
+      dataConnectorObjectType: event_config
+      fieldMapping:
+        chainId:
+          column:
+            name: chain_id
+        contract:
+          column:
+            name: contract
+        createdAt:
+          column:
+            name: created_at
+        id:
+          column:
+            name: id
+        startBlock:
+          column:
+            name: start_block
+        structure:
+          column:
+            name: structure
+        updatedAt:
+          column:
+            name: updated_at
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: EventConfig
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - chainId
+          - contract
+          - createdAt
+          - id
+          - startBlock
+          - structure
+          - updatedAt
+
+---
+kind: BooleanExpressionType
+version: v1
+definition:
+  name: EventConfigBoolExp
+  operand:
+    object:
+      type: EventConfig
+      comparableFields:
+        - fieldName: chainId
+          booleanExpressionType: Int4BoolExp
+        - fieldName: contract
+          booleanExpressionType: VarcharBoolExp
+        - fieldName: createdAt
+          booleanExpressionType: TimestampBoolExp
+        - fieldName: id
+          booleanExpressionType: UuidBoolExp
+        - fieldName: startBlock
+          booleanExpressionType: Int4BoolExp
+        - fieldName: structure
+          booleanExpressionType: JsonBoolExp
+        - fieldName: updatedAt
+          booleanExpressionType: TimestampBoolExp
+      comparableRelationships: []
+  logicalOperators:
+    enable: true
+  isNull:
+    enable: true
+  graphql:
+    typeName: EventConfigBoolExp
+
+---
+kind: ObjectType
+version: v1
+definition:
+  name: DeleteEventConfigByIdResponse
+  description: Responses from the 'delete_event_config_by_id' procedure
+  fields:
+    - name: affectedRows
+      type: Int4!
+      description: The number of rows affected by the mutation
+    - name: returning
+      type: "[EventConfig!]!"
+      description: Data from rows affected by the mutation
+  graphql:
+    typeName: DeleteEventConfigByIdResponse
+    inputTypeName: DeleteEventConfigByIdResponseInput
+  dataConnectorTypeMapping:
+    - dataConnectorName: my_pg
+      dataConnectorObjectType: delete_event_config_by_id_response
+      fieldMapping:
+        affectedRows:
+          column:
+            name: affected_rows
+        returning:
+          column:
+            name: returning
+
+---
+kind: TypePermissions
+version: v1
+definition:
+  typeName: DeleteEventConfigByIdResponse
+  permissions:
+    - role: admin
+      output:
+        allowedFields:
+          - affectedRows
+          - returning
+
+---
+kind: Command
+version: v1
+definition:
+  name: DeleteEventConfigById
+  outputType: DeleteEventConfigByIdResponse!
+  arguments:
+    - name: keyId
+      type: Uuid!
+    - name: preCheck
+      type: EventConfigBoolExp
+      description: Delete permission predicate over the 'event_config' collection
+  source:
+    dataConnectorName: my_pg
+    dataConnectorCommand:
+      procedure: delete_event_config_by_id
+    argumentMapping:
+      keyId: key_id
+      preCheck: pre_check
+  graphql:
+    rootFieldName: deleteEventConfigById
+    rootFieldKind: Mutation
+  description: Delete any row on the 'event_config' collection using the 'id' key
+
+---
+kind: CommandPermissions
+version: v1
+definition:
+  commandName: DeleteEventConfigById
+  permissions:
+    - role: admin
+      allowExecution: true
+
