@@ -1,0 +1,95 @@
+---
+kind: AggregateExpression
+version: v1
+definition:
+  name: EventConfigAggExp
+  operand:
+    object:
+      aggregatedType: EventConfig
+      aggregatableFields:
+        - fieldName: chainId
+          aggregateExpression: Int4AggExp
+        - fieldName: contract
+          aggregateExpression: VarcharAggExp
+        - fieldName: createdAt
+          aggregateExpression: TimestampAggExp
+        - fieldName: id
+          aggregateExpression: UuidAggExp
+        - fieldName: startBlock
+          aggregateExpression: Int4AggExp
+        - fieldName: structure
+          aggregateExpression: JsonAggExp
+        - fieldName: updatedAt
+          aggregateExpression: TimestampAggExp
+  count:
+    enable: true
+  graphql:
+    selectTypeName: EventConfigAggExp
+
+---
+kind: OrderByExpression
+version: v1
+definition:
+  name: EventConfigOrderByExp
+  operand:
+    object:
+      orderedType: EventConfig
+      orderableFields:
+        - fieldName: chainId
+          orderByExpression: Int4OrderByExp
+        - fieldName: contract
+          orderByExpression: VarcharOrderByExp
+        - fieldName: createdAt
+          orderByExpression: TimestampOrderByExp
+        - fieldName: id
+          orderByExpression: UuidOrderByExp
+        - fieldName: startBlock
+          orderByExpression: Int4OrderByExp
+        - fieldName: structure
+          orderByExpression: JsonOrderByExp
+        - fieldName: updatedAt
+          orderByExpression: TimestampOrderByExp
+      orderableRelationships: []
+  graphql:
+    expressionTypeName: EventConfigOrderByExp
+
+---
+kind: Model
+version: v2
+definition:
+  name: EventConfig
+  objectType: EventConfig
+  source:
+    dataConnectorName: my_pg
+    collection: event_config
+  filterExpressionType: EventConfigBoolExp
+  aggregateExpression: EventConfigAggExp
+  orderByExpression: EventConfigOrderByExp
+  graphql:
+    selectMany:
+      queryRootField: eventConfig
+      subscription:
+        rootField: eventConfig
+    selectUniques:
+      - queryRootField: eventConfigById
+        uniqueIdentifier:
+          - id
+        subscription:
+          rootField: eventConfigById
+    filterInputTypeName: EventConfigFilterInput
+    aggregate:
+      queryRootField: eventConfigAggregate
+      subscription:
+        rootField: eventConfigAggregate
+
+---
+kind: ModelPermissions
+version: v1
+definition:
+  modelName: EventConfig
+  permissions:
+    - role: admin
+      select:
+        filter: null
+        allowSubscriptions: true
+
