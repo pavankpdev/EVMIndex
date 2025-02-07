@@ -65,7 +65,7 @@
           "structure": {
             "name": "structure",
             "type": {
-              "scalarType": "json"
+              "scalarType": "varchar"
             },
             "nullable": "nullable",
             "description": null
@@ -321,21 +321,6 @@
             }
           },
           "typeRepresentation": "int64AsString"
-        },
-        "json": {
-          "typeName": "json",
-          "schemaName": "pg_catalog",
-          "description": null,
-          "aggregateFunctions": {},
-          "comparisonOperators": {
-            "_in": {
-              "operatorName": "IN",
-              "operatorKind": "in",
-              "argumentType": "json",
-              "isInfix": true
-            }
-          },
-          "typeRepresentation": null
         },
         "numeric": {
           "typeName": "numeric",

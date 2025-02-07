@@ -15,7 +15,7 @@ definition:
     - name: startBlock
       type: Int4
     - name: structure
-      type: Json
+      type: Varchar
     - name: updatedAt
       type: Timestamp
   graphql:
