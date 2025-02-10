@@ -2,9 +2,12 @@ package main
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"log"
 	"math/big"
+	"strconv"
+	"sync"
 	"time"
 
 	"github.com/ethereum/go-ethereum"
@@ -13,14 +16,28 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 	"github.com/pavankpdev/EVMIndex/core/db"
 	sqlc "github.com/pavankpdev/EVMIndex/core/db/sqlc"
+	"golang.org/x/crypto/sha3"
 
 	_ "github.com/lib/pq"
 )
 
-func main() {
+var (
+	store *sqlc.Queries
+	conn *sql.DB
+	once   sync.Once
+)
 
-	conn := db.GetDbConnection()
-	store := sqlc.New(conn);
+func initDB() {
+	once.Do(func() {
+		conn = db.GetDbConnection()
+		store = sqlc.New(conn)
+		fmt.Println("✅ Database connection initialized")
+	})
+}
+
+func main() {
+	initDB()
+	defer conn.Close()
 
 	rpcURL := "wss://polygon-amoy.g.alchemy.com/v2/e5X5TCL-0GBdm_iP9LnsNskTgeAHPHrS"
 
@@ -30,37 +47,44 @@ func main() {
 	}
 	defer client.Close()
 
-	events, err := store.GetAllEventConfigs(context.Background());
+	events, err := store.GetAllEventConfigs(context.Background())
 	if err != nil {
-		log.Fatalf("Failed to connect to Ethereum WebSocket: %v", err)
-		return;
+		log.Fatalf("Failed to fetch event configs: %v", err)
+		return
 	}
+
+	var wg sync.WaitGroup
 
 	for _, e := range events {
+		wg.Add(1)
 
-		fmt.Println("Event Config:")
-		fmt.Printf("ID: %s\n", e.ID)
-		fmt.Printf("Start Block: %s\n", e.StartBlock)
-		fmt.Printf("Contract: %s\n", e.Contract.String)
-		fmt.Printf("Chain ID: %d\n", e.ChainID)
-		fmt.Printf("Structure: %v\n", e.Structure.String)
-		fmt.Printf("Created At: %s\n", e.CreatedAt)
-		fmt.Printf("Updated At: %s\n", e.UpdatedAt)
-		fmt.Println("----------------------")
+		go func(event sqlc.EventConfig) {
+			defer wg.Done()
+			fmt.Printf("\n🔄 Processing Event ID: %s, Contract: %s\n", event.ID, event.Contract.String)
+
+			contractAddress := common.HexToAddress(event.Contract.String)
+			startBlock := uint64(event.StartBlock.Int32)
+
+			eventTopic := getEventTopic(event.Structure.String)
+
+			// Run historical sync
+			fmt.Printf("📜 Running historical sync for Event ID: %s\n", event.ID)
+			fetchHistoricalEvents(client, contractAddress, eventTopic, startBlock)
+
+			// Run live event listener
+			fmt.Printf("🚀 Starting live sync for Event ID: %s\n", event.ID)
+			listenForLiveEvents(client, contractAddress, eventTopic)
+
+		}(e)
 	}
-	// contractAddress := common.HexToAddress("0x31Ef6675B147bFCa2ab7dF6462547110c98F0B00")
-	// startBlock := uint64(5810517)
 
-	// eventSignature := "Transfer(address,address,uint256)"
-	// hash := sha3.NewLegacyKeccak256()
-	// hash.Write([]byte(eventSignature))
-	// eventTopic_ := hash.Sum(nil)
+	wg.Wait() // Wait for all goroutines to complete
+}
 
-	// eventTopic := common.BytesToHash(eventTopic_)
-
-	// fetchHistoricalEvents(client, contractAddress, eventTopic, startBlock)
-
-	// listenForLiveEvents(client, contractAddress, eventTopic)
+func getEventTopic(eventSignature string) common.Hash {
+	hash := sha3.NewLegacyKeccak256()
+	hash.Write([]byte(eventSignature))
+	return common.BytesToHash(hash.Sum(nil))
 }
 
 func fetchHistoricalEvents(client *ethclient.Client, contract common.Address, topic common.Hash, startBlock uint64) {
@@ -74,7 +98,7 @@ func fetchHistoricalEvents(client *ethclient.Client, contract common.Address, to
 		FromBlock: big.NewInt(int64(startBlock)),
 		ToBlock:   big.NewInt(int64(latestBlock)),
 		Addresses: []common.Address{contract},
-		Topics:    [][]common.Hash{{topic}}, 
+		Topics:    [][]common.Hash{{topic}},
 	}
 
 	logs, err := client.FilterLogs(context.Background(), query)
@@ -84,8 +108,9 @@ func fetchHistoricalEvents(client *ethclient.Client, contract common.Address, to
 
 	fmt.Println("📌 Historical Events:")
 	for _, logEntry := range logs {
-		printEvent(client, logEntry)
+		processEvent(client, logEntry)
 	}
+	fmt.Println("✅ Historical sync completed.")
 }
 
 func listenForLiveEvents(client *ethclient.Client, contract common.Address, topic common.Hash) {
@@ -106,12 +131,12 @@ func listenForLiveEvents(client *ethclient.Client, contract common.Address, topi
 		case err := <-sub.Err():
 			log.Fatalf("Subscription error: %v", err)
 		case logEntry := <-logs:
-			printEvent(client, logEntry)
+			processEvent(client, logEntry)
 		}
 	}
 }
 
-func printEvent(client *ethclient.Client, logEntry types.Log) {
+func processEvent(client *ethclient.Client, logEntry types.Log) {
 	fmt.Println("----------------------------------------------------")
 	fmt.Printf("Block: %d\nTx: %s\n", logEntry.BlockNumber, logEntry.TxHash.Hex())
 
@@ -131,4 +156,22 @@ func printEvent(client *ethclient.Client, logEntry types.Log) {
 	fmt.Printf("Operator: %s\n", operator.Hex())
 	fmt.Printf("To: %s\n", to.Hex())
 	fmt.Printf("TokenIn: %s\n", tokenID.String())
+
+	go storeEvent(logEntry, timestamp, operator, to, tokenID)
+}
+
+func storeEvent(logEntry types.Log, timestamp time.Time, operator, to common.Address, tokenID *big.Int) {
+	err := store.InsertEventLog(context.Background(), sqlc.InsertEventLogParams{
+		BlockNumber: strconv.FormatUint(logEntry.BlockNumber, 10),
+		TxHash:      logEntry.TxHash.Hex(),
+		Timestamp:   timestamp,
+		From:        operator.Hex(),
+		To:          to.Hex(),
+		TokenID:     tokenID.String(),
+	})
+	if err != nil {
+		log.Printf("❌ Failed to store event log: %v", err)
+	} else {
+		fmt.Println("✅ Event log stored successfully!")
+	}
 }

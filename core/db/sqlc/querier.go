@@ -13,13 +13,20 @@ type Querier interface {
 	CreateEventConfig(ctx context.Context, arg CreateEventConfigParams) (EventConfig, error)
 	CreateNetwork(ctx context.Context, arg CreateNetworkParams) (Network, error)
 	DeleteEventConfig(ctx context.Context, id uuid.UUID) error
+	DeleteEventLogByTxHash(ctx context.Context, txHash string) error
 	DeleteNetwork(ctx context.Context, id uuid.UUID) error
+	DeleteOldEventLogs(ctx context.Context) error
 	GetAllEventConfigs(ctx context.Context) ([]EventConfig, error)
+	GetAllEventLogs(ctx context.Context, arg GetAllEventLogsParams) ([]EventLog, error)
 	GetAllNetworks(ctx context.Context) ([]Network, error)
 	GetEventConfigByContract(ctx context.Context, contract sql.NullString) ([]EventConfig, error)
 	GetEventConfigByID(ctx context.Context, id uuid.UUID) (EventConfig, error)
+	GetEventLogByTxHash(ctx context.Context, txHash string) (EventLog, error)
+	GetEventLogsByBlockNumber(ctx context.Context, blockNumber string) ([]EventLog, error)
 	GetNetworkByID(ctx context.Context, id uuid.UUID) (Network, error)
+	InsertEventLog(ctx context.Context, arg InsertEventLogParams) error
 	UpdateEventConfig(ctx context.Context, arg UpdateEventConfigParams) (EventConfig, error)
+	UpdateEventLog(ctx context.Context, txHash string) error
 	UpdateNetwork(ctx context.Context, arg UpdateNetworkParams) (Network, error)
 }
 
