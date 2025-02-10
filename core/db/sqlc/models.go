@@ -4,6 +4,7 @@ package db
 
 import (
 	"database/sql"
+	"time"
 
 	"github.com/google/uuid"
 )
@@ -16,6 +17,18 @@ type EventConfig struct {
 	Structure  sql.NullString `json:"structure"`
 	CreatedAt  sql.NullTime   `json:"created_at"`
 	UpdatedAt  sql.NullTime   `json:"updated_at"`
+}
+
+type EventLog struct {
+	ID          uuid.UUID    `json:"id"`
+	BlockNumber string       `json:"block_number"`
+	TxHash      string       `json:"tx_hash"`
+	Timestamp   time.Time    `json:"timestamp"`
+	From        string       `json:"from"`
+	To          string       `json:"to"`
+	TokenID     string       `json:"token_id"`
+	CreatedAt   sql.NullTime `json:"created_at"`
+	UpdatedAt   sql.NullTime `json:"updated_at"`
 }
 
 type Network struct {
